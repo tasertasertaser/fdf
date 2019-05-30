@@ -12,6 +12,12 @@
 
 #include "libft.h"
 
+/*
+**	splits string into substrings as delimited by 'c'
+**	returns char ** to array of separated strings
+**	the array of strings is null-terminated, as well as each individual string
+*/
+
 char	**ft_strsplit(char const *s, char c)
 {
 	size_t	i;

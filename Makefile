@@ -11,8 +11,9 @@
 # **************************************************************************** #
 
 NAME	=	fdf
-SRCS	=	tests.c			\
-			srcs/lines.c	\
+SRCS	=	tests.c				\
+			srcs/lines.c		\
+			srcs/file_parser.c	\
 			srcs/gradient.c
 INCLS	=	includes/fdf.h
 WFLAGS	=	-Wall -Wextra -Werror

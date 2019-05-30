@@ -1,6 +1,4 @@
 #include "includes/fdf.h"
-#include <stdio.h>
-
 
 typedef struct		s_info
 {
@@ -11,26 +9,51 @@ typedef struct		s_info
 	void			*mlx;
 }					t_info;
 
-void	draw_testline(void *mlx, void *window)
+t_pt	**make_gridtest(char *filename)
 {
-	int x1 = 250;
-	int y1 = 250;
+	return(parse(filename));
+}
 
+void	draw_2D_gridtest(t_pt **map, void *mlx, void *window)
+{
+	int i = 0;
+	int j;
 
-	mlx_pixel_put(mlx, window, x1, y1, 0xFFFFFF); // center
-	mlx_pixel_put(mlx, window, 150, 150, 0xFF0783); // top right
-	mlx_pixel_put(mlx, window, 350, 350, 0x2FA8F9); // bottom right
-	mlx_pixel_put(mlx, window, 150, 350, 0xFFDC19); // bottom left
-	mlx_pixel_put(mlx, window, 350, 150, 0x62E077); // top right
+	while(i < 11)
+	{
+		j = 0;
+		while(j < 19)
+		{
+			mlx_pixel_put(mlx, window, (map[i][j].x * UNIT) + (2*UNIT), (map[i][j].y * UNIT) + (2 * UNIT), map[i][j].color);
+			j++;
+		}
+		i++;
+	}
+}
 
-	t_line *blueline = make_line(250, 250, 350, 350);
-	draw_gradient_line(blueline, mlx, window, 0x2FA8F9);
-	// while(x1 != 350)
-	// {
-	// 	x1++;
-	// 	y1++;
-	// 	mlx_pixel_put(mlx, window, x1, y1, gradient(0xFFFFFF, 0x2Fa8F9, 100, x1-250));
-	// }
+void	draw_linetest(void *mlx, void *window)
+{
+	t_pt center = {250, 250, 0, WHT};
+
+	draw_line(center, (t_pt){150, 150, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){200, 150, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){250, 150, 0, 0xFF57A4}, mlx, window);
+	draw_line(center, (t_pt){300, 150, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){350, 150, 0, WHT}, mlx, window);
+
+	draw_line(center, (t_pt){350, 200, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){350, 250, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){350, 300, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){350, 350, 0, WHT}, mlx, window);
+
+	draw_line(center, (t_pt){300, 350, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){250, 350, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){200, 350, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){150, 350, 0, WHT}, mlx, window);
+
+	draw_line(center, (t_pt){150, 300, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){150, 250, 0, WHT}, mlx, window);
+	draw_line(center, (t_pt){150, 200, 0, WHT}, mlx, window);
 }
 /*
 int	mouse_press(int button, int x, int y, t_info *mr_struct)
@@ -43,7 +66,7 @@ int	mouse_press(int button, int x, int y, t_info *mr_struct)
 		line->x1 = x;
 		line->y1 = y;
 		line->slope = (x-250) / (y-250);
-		line->color = 0xFFAA00;
+		line->color = YLW;
 		draw_line(line, mr_struct->mlx, mr_struct->window);
 	}
 	else
@@ -51,21 +74,90 @@ int	mouse_press(int button, int x, int y, t_info *mr_struct)
 	return(0);
 }
 */
+
+void	play_sound(int key, t_info *mr_struct)
+{
+	if (key == 86) //Numpad 4
+	{
+		system("play -n synth .1 square 261.626"); //C4
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 200, 235, PNK, "C");
+	}
+	if (key == 87) //Numpad 5
+	{
+		system("play -n synth .1 square 293.665"); //D
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 215, 235, PRP, "D");
+	}
+	if (key == 88) //Numpad 6
+	{
+		system("play -n synth .1 square 329.628"); //E
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 230, 235, BLU, "E");
+	}
+	if (key == 69) //Numpad +
+	{
+		system("play -n synth .1 square 349.228"); //F
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 245, 235, AQU, "F");
+	}
+	if (key == 83) //Numpad 1
+	{	
+		system("play -n synth .1 square 391.995"); //G
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 260, 235, GRN, "G");
+	}
+	if (key == 84) //Numpad 2
+	{
+		system("play -n synth .1 square 440"); //A
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 275, 235, YLW, "A");
+	}
+	if (key == 85) //Numpad 3
+	{
+		system("play -n synth .1 square 493.883"); //B
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 290, 235, ORN, "B");
+	}
+	if (key == 76) //Numpad Enter
+	{
+		system("play -n synth .1 square 523.251"); //C
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 305, 235, PNK, "C");
+	}
+	if (key == 81) //Numpad =
+	{
+		system("play -n synth .1 sin 329.628"); //E
+		system("play -n synth .1 sin 293.665"); //D
+		system("play -n synth .1 sin 440"); //A
+		system("play -n synth .1 sin 493.883"); //B
+		system("play -n synth .1 sin 523.251"); //C
+		mlx_string_put(mr_struct->mlx, mr_struct->window, 180, 235, PRP, "BONUS SOUND");
+	}
+}
+
 int key_press(int key, t_info *mr_struct)
 {
-	if(key == 53)
+	mlx_clear_window (mr_struct->mlx, mr_struct->window);
+	if(key == ESC_KEY)
 	{
 		mlx_destroy_window (mr_struct->mlx, mr_struct->window);
 		exit(0);
 	}
-	else if(key == 3)
+	else if(key == F_KEY)
 	{
-		draw_testline(mr_struct->mlx, mr_struct->window);
+		draw_linetest(mr_struct->mlx, mr_struct->window);
+	}
+	else if(key == J_KEY)
+	{
+		char *filename = "./maps/42.fdf";
+		parse(filename);
+	}
+	else if(key == K_KEY)
+	{
+		// char const str1 = "0  0  0";
+		// char const str2 = " 0  0  0\0";
+		// char c = '\0';
+		printf("K\n"); //, ft_strcjoin(str1, str2, c));
+
 	}
 	else
 	{
 		char *string = ft_itoa(key);
 		mlx_string_put(mr_struct->mlx, mr_struct->window, mr_struct->x, mr_struct->y, mr_struct->color, string);
+		play_sound(key, mr_struct);
 		free(string);
 	}
 	return(key);
@@ -73,7 +165,7 @@ int key_press(int key, t_info *mr_struct)
 
 int key_release(int key, t_info *mr_struct)
 {
-	if(key == 53)
+	if(key == ESC_KEY)
 	{
 		mlx_destroy_window (mr_struct->mlx, mr_struct->window);
 		exit(0);
@@ -87,13 +179,13 @@ int key_release(int key, t_info *mr_struct)
 
 int	main(void)
 {
-
 	void *mlx_ptr = mlx_init();
 	void *window = mlx_new_window(mlx_ptr, 500, 500, "new window who dis");	
 
-	mlx_string_put(mlx_ptr, window, 20, 60, 0xffffef, "press a key");
+	//mlx_string_put(mlx_ptr, window, 20, 60, WHt, "press a key");
 	
-	t_info mr_struct = { .color = 0xFFFFFF, .x = 20, .y = 30, .window = window, .mlx = mlx_ptr};
+	
+	t_info mr_struct = { .color = WHT, .x = 20, .y = 30, .window = window, .mlx = mlx_ptr};
 	mlx_hook(window, 2, (1L<<0), key_press, &mr_struct); //wtf are these (1L<<0) masks for? Apparently required? why required in addition to button #?
 	//mlx_hook(window, 3, (1L<<1), key_release, &mr_struct);
 	//mlx_hook(window, 4, (1L<<11), mouse_press, &mr_struct);

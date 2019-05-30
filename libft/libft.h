@@ -17,6 +17,9 @@
 # include <unistd.h>
 # include <string.h>
 
+# define BUFF_SIZE 64
+# define FD_MAX 4864
+
 # define MIN(a,b) ((a) > (b) ? (b) : (a))
 # define MAX(a,b) ((a) > (b) ? (a) : (b))
 # define ABSOLUTE(a) (((a) < 0) ? -1 * (a) : (a))
@@ -116,4 +119,5 @@ char	*ft_strnchr(const char *s, int c, size_t n);
 char	*ft_strcjoin(char const *s1, char const *s2, char c);
 int		ft_round(double num);
 char	*ft_base(int num, int base);
+int		get_next_line(const int fd, char **line);
 #endif

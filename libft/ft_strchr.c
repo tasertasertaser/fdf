@@ -10,6 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+**	reads the given string to find the first occurence of char c
+**	returns a pointer to the position after that
+*/
+
 #include <unistd.h>
 
 char	*ft_strchr(const char *s, int c)

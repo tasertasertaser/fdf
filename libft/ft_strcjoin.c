@@ -19,13 +19,14 @@ char	*ft_strcjoin(char const *s1, char const *s2, char c)
 	size_t	len;
 	size_t	len2;
 
+	i = 0;
 	if (!s1 || !s2)
 		return (NULL);
 	i = (ft_strlen(s1));
 	len2 = 0;
 	while (s2 && s2[len2] != c)
 		len2++;
-	len = i + len2 + 1;
+	len = i + len2;
 	if (!(fresh = (char *)malloc(len + 1)))
 		return (NULL);
 	ft_strcpy(fresh, s1);

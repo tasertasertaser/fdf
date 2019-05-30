@@ -12,27 +12,12 @@
 
 #include "../includes/fdf.h"
 
-int linelen(t_line *line)
+int linelen(t_pt start, t_pt end)
 {
-	int points[4];
-	int delta_Y;
-	int delta_X;
-	int len;
-
-	points[0] = line->x0;
-	points[1] = line->y0;
-	points[2] = line->x1;
-	points[3] = line->y1;
-
-	delta_Y = points[3] - points[1];
-	delta_X = points[2] - points[0];
-
-	len = MAX(ABSOLUTE(delta_Y), ABSOLUTE(delta_X));
-
-	return (len);
+	return (MAX(ABSOLUTE(end.y - start.y), ABSOLUTE(end.x - start.x)));
 }
 
-t_line *make_line(int x0, int y0, int x1, int y1)
+/*t_line *make_line(t_pt start, t_pt end)
 {
 	t_line *line;
 	if((line = malloc(sizeof(t_line))))
@@ -41,82 +26,107 @@ t_line *make_line(int x0, int y0, int x1, int y1)
 		double slope;
 		int intercept;
 
-		if(ABSOLUTE(x1 - x0) > ABSOLUTE(y1 - y0))
+		if(ABSOLUTE(end.x - start.x) >= ABSOLUTE(end.y - start.y))
 		{
-			slope = (y1 - y0) / (x1 - x0);
-			intercept = y1 + ((slope * -1) * x1);
+			slope = (double)(end.y - start.y) / (double)(end.x - start.x);
+			intercept = end.y + ((slope * -1) * end.x);
 			slope_type = 'x';
 		}
 		else
 		{
-			slope = (x1 - x0) / (y1 - y0);
-			intercept = x1 + ((slope * -1) * y1);
+			slope = (double)(end.x - start.x) / (double)(end.y - start.y);
+			intercept = end.x + ((slope * -1) * end.y);
 			slope_type = 'y';
 		}
-		*line = (t_line){x0, y0, x1, y1, slope_type, slope, intercept, 0xFFFFFF};
+		*line = (t_line){start, end, slope_type, slope, intercept};
+
+		printf(P_RED"line made\n"P_XCOLOR);												//tests
+		printf(P_YELLOW"startpoint:"P_XCOLOR" %d, %d\n", line->start.x, line->start.y); //
+		printf(P_YELLOW"endpoint:"P_XCOLOR" %d, %d\n", line->end.x, line->end.y);		//
+		printf(P_YELLOW"type:"P_XCOLOR" %c\n", line->slope_type);						//
+		printf(P_YELLOW"slope:"P_XCOLOR" %f\n", line->slope);							//
+		printf(P_YELLOW"intercept:"P_XCOLOR" %d\n", line->intercept);					//
+		printf(P_YELLOW"color:"P_XCOLOR" %x\n", line->start.color);						//
+
 		return (line);
 	}
 	else
 		return (NULL);
 }
+*/
 
-void	draw_line(t_line* line, void *mlx, void *window)
+// void	backcheck(t_pt start, t_pt end)
+// {
+// 	t_pt tmp;
+// 	if()
+// }
+
+void	draw_line(t_pt start, t_pt end, void *mlx, void *window)
+{
+	int		x;
+	int		y;
+	double	slope;
+	int		intercept;
+	int		sign;
+
+	slope = (double)(end.y - start.y) / (double)(end.x - start.x);
+	sign = (end.x - start.x) < 0 ? -1 : 1;
+
+	intercept = ft_round((double)end.y - (slope * (double)end.x));
+	if(slope <= 1 && slope >= -1)
+	{
+		x = start.x;
+		while(x != end.x)
+		{
+			y = (slope * x) + intercept;
+			mlx_pixel_put(mlx, window, x, y, start.color);
+			x += sign;
+		}
+	}
+	else
+	{
+		slope = (double)(end.x - start.x) / (double)(end.y - start.y);
+		intercept = ft_round((double)end.x - (slope * (double)end.y));
+		y = start.y;
+		sign = (end.y - start.y) < 0 ? -1 : 1;
+		while(y != end.y)
+		{
+			x = (slope * y) + intercept;
+			mlx_pixel_put(mlx, window, x, y, start.color);
+			y += sign;
+		}
+	}
+	mlx_pixel_put(mlx, window, start.x, start.y, start.color);
+}
+/*
+void	draw_gradient_line(t_line* line, void *mlx, void *window)
 {
 	int x;
 	int y;
+	int color;
 
 	if(line->slope_type == 'x')
 	{
-		x = line->x0;
-		while(x < line->x1)
+		x = line->start.x;
+		while(x < line->end.x)
 		{
+			color = gradient(line->start.color, line->end.color, linelen(line), ABSOLUTE(x - line->start.x));
 			y = (line->slope * x) + line->intercept;
-			mlx_pixel_put(mlx, window, x, y, line->color);
+			mlx_pixel_put(mlx, window, x, y, color);
 			x++;
 		}
 	}
 	if(line->slope_type == 'y')
 	{
-		y = line->y0;
-		while(y < line->y1)
+		y = line->start.y;
+		while(y < line->end.y)
 		{
-			x = (line->slope * x) + line->intercept;
-			mlx_pixel_put(mlx, window, x, y, line->color);
+			x = (line->slope * y) + line->intercept;
+			mlx_pixel_put(mlx, window, x, y, line->start.color);
 			y++;
 		}
 	}
-	mlx_pixel_put(mlx, window, line->x0, line->y0, line->color);
-	mlx_pixel_put(mlx, window, line->x1, line->y1, line->color);
+	mlx_pixel_put(mlx, window, line->start.x, line->start.y, line->start.color);
+	mlx_pixel_put(mlx, window, line->end.x, line->end.y, line->end.color);
 }
-
-void	draw_gradient_line(t_line* line, void *mlx, void *window, int endcolor)
-{
-	int x;
-	int y;
-
-	if(line->slope_type == 'x')
-	{
-		x = line->x0;
-		while(x < line->x1)
-		{
-			y = (line->slope * x) + line->intercept;
-			line->color = gradient(line->color, endcolor, linelen(line), ABSOLUTE(x - line->x0));
-			mlx_pixel_put(mlx, window, x, y, line->color);
-			x++;
-		}
-	}
-	if(line->slope_type == 'y')
-	{
-		y = line->y0;
-		while(y < line->y1)
-		{
-			x = (line->slope * x) + line->intercept;
-			line->color = gradient(line->color, endcolor, linelen(line), ABSOLUTE(y - line->y0));
-			mlx_pixel_put(mlx, window, x, y, line->color);
-			y++;
-		}
-	}
-	mlx_pixel_put(mlx, window, line->x0, line->y0, line->color);
-	mlx_pixel_put(mlx, window, line->x1, line->y1, line->color);
-}
-
+*/

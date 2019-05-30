@@ -12,6 +12,11 @@
 
 #include "libft.h"
 
+/*
+**	counts the number of words in a string
+**	a word is a group of characters separated by the delimiting character 'c'
+*/
+
 int		ft_wordcount(const char *s, char c)
 {
 	int i;

@@ -6,7 +6,7 @@
 #    By: cschulle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/05/10 16:42:53 by cschulle         ###   ########.fr        #
+#    Updated: 2019/05/27 18:48:34 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,6 +81,7 @@ SRCS = ft_memset.c	\
 	ft_strcjoin.c	\
 	ft_round.c		\
 	ft_base.c 		\
+	get_next_line.c	\
 	ft_iswhitespace.c
 
 OBJS = $(SRCS:%.c=%.o)
@@ -101,7 +102,7 @@ fclean : clean
 	@echo "$(GREY)<< library cleaned >>$(WHITE)"	
 
 testclean : fclean
-	@rm -f test main.c
+	@rm -f test
 	@echo "$(GREY)<< test files cleaned >>$(WHITE)"
 
 re : fclean all
@@ -113,5 +114,5 @@ test : re
 
 LLDB : 
 	@gcc -g *.c
-	@echo "$(BLUE)<< debug generated >>"
-	@lldb a.out
+	@echo "$(BLUE)<< debug generated >>$(WHITE)"
+	# @lldb a.out
