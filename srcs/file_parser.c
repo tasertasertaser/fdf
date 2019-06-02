@@ -1,120 +1,114 @@
 #include "../includes/fdf.h"
 
-int	valid_chars(char *row)
-{
-	int		i;
-	int		colors;
 
-	colors = 0;
-	i = 0;
-	while (row[i])
-	{
-		if (row[i] == ' ' || !(ft_isdigit(row[i])) || row[i] == ',' || row[i] == 'x')
-			if (row[i] == ',')
-				colors = 1;
-		else
-			ERRORBADTHINGS;
-		i++;
-	}
-	return (colors);
+t_pt	*make_point(char *str, int x, int y)
+{
+	t_pt	*point;
+
+	if (!(point = malloc(sizeof(t_pt))))
+		error("insufficient memory.");
+	point->z = ft_atoi(str);
+	point->x = x;
+	point->y = y;
+	char	*color;
+	if ((color = ft_strchr(str, ',')))
+		point->color = (ft_atoibase(color, 16));
+	point->previous = NULL;
+	point->next = NULL;
+
+	return (point);
 }
 
-// t_pt	**make_map(t_pt **map, int rows, int columns)
-// {
-// 	int		i;
+void	double_list_add(t_pt *point, t_pt *list)
+{
+	t_pt	*start;
 
-// 	i = 0;
-// 	if (!(map = malloc(sizeof(t_pt *) * rows + 1)))
-// 		ERRORBADTHINGS;
-// 	while (i < rows)
-// 	{
-// 		if (!(map[i] = malloc(sizeof(t_pt) * columns)))
-// 			ERRORBADTHINGS;
-// 		i++;
-// 	}
-// }
+	start = list;
+	while (list->next != NULL)
+		list = list->next;
+	list->next = point;
+	point->previous = list;
+	point->next = NULL;
+	list = start;
+}
 
-// int		valid_number(char *string)
-// {
-// 	int		num;
+t_pt	*add_row(char *row, t_pt *pointlist, int y)
+{
+	char	**points;
+	int		x;
 
-// 	num = ft_atoi(string);
-// 	if (num >= 0 && num <= FT_INTMAX)
-// 		return (num);
-// 	else
-// 		ERRORBADTHINGS;
-// }
+	x = 0;
+	if ((points = ft_strsplit(row, ' ')) == NULL)
+		error("failed ft_strsplit in add_row().");
+	while (points[x])
+	{
+		if (!pointlist)
+			pointlist = make_point(points[x], x, y);
+		else
+			double_list_add(make_point(points[x], x, y), pointlist);
+		x++;
+	}
+	return (pointlist);
+}
 
-// void	read_map(char *filename, t_pt **map, int rows)
-// {
-// 	int		fd;
-// 	char	*row;
-// 	int		y;
+void	print_points(t_pt *pointlist)
+{
+	t_pt	*cursor;
 
-// 	y = 0;
-// 	if ((fd = open(filename, O_RDONLY)) < 0)
-// 		ERRORBADTHINGS;
-// 	while (y < rows)
-// 	{
-// 		get_next_line(fd, &row);
-// 		read_row(row, y, map[y]);
-// 		y++;
-// 	}
-// }
+	cursor = pointlist;
+	while (cursor != NULL)
+	{
+		if (cursor->previous && cursor->y != cursor->previous->y)
+			printf("\n");
+		printf(" %d", cursor->z);
+		cursor = cursor->next;
+	}
+	printf("\n");
+}
 
-int		get_rows(char *filename)
+t_map	new_map(char *filename)
 {
 	int		fd;
-	t_map	map_info;
-	int		colors;
 	char	*line;
+	t_map	map;
 
 	if ((fd = open(filename, O_RDONLY)) < 0)
-		ERRORBADTHINGS;
-	get_next_line(fd, &line);
-	pts = ft_wordcount(line, ' ');
-	rows = 1;
+		error("couldn't open file.");
+	map.rows = 0;
+	map.points = NULL;
 	while ((get_next_line(fd, &line)) == 1)
 	{
-		colors = valid_chars(line);
-		rows++;
+		if (map.rows == 0)
+			map.columns = ft_wordcount(line, ' ');
+		valid_check(line, map.columns);
+		map.points = add_row(line, map.points, map.rows);
+		map.rows++;
 	}
 	free(line);
 	close(fd);
-	map_info = (t_map){rows, pts, colors};
-	return(map_info);
+	return(map);
 }
 
-// void	get_pts(t_pt **map, char *filename, int rows)
-// {
-// 	int		fd;
-// 	char	*line;
-// 	int		pts;
-
-// 	if ((fd = open(filename, O_RDONLY)) < 0)
-// 		ERRORBADTHINGS;
-// 	get_next_line(fd, &line);
-// 	pts = ft_wordcount(line, ' ');
-
-// 	while (rows >= 0)
-// 	{
-
-// 	}
-
-// }
-
-t_pt	**parse(char *filename)
+t_map	parse(char *filename)
 {
-	int		rows;
-	t_pt	**map;
+	t_map	map;
 
-	i = 0;
-	map = NULL;
+	map = new_map(filename);
 
-	rows = get_rows(filename);
-	if (!(map = malloc(sizeof(t_pt *) * rows)))
-		ERRORBADTHINGS;
-	get_pts(map, filename, rows);
+	print_points(map.points);
+	// get_pts(map, filename, rows);
+
+
+	/* ••••••• TESTS ••••••• */
+	// printf("rows: "P_PR"%d\n"P_X, map.rows);
+	// printf("columns: "P_YW"%d\n", map.columns);
+	
+	/*
+	printf("grid[0][0]: "P_PR"%d, %d\n"P_X,\
+		map.grid[0][0].x,\
+		map.grid[0][0].y);
+	*/
+	/* ••••••• ----- ••••••• */
 
 	return (map);
 }

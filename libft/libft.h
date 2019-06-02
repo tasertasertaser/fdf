@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cschulle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 15:41:07 by cschulle          #+#    #+#             */
-/*   Updated: 2019/05/10 16:34:27 by cschulle         ###   ########.fr       */
+/*   Updated: 2019/06/01 11:47:13 by cschulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,8 @@ char	*ft_strcjoin(char const *s1, char const *s2, char c);
 int		ft_round(double num);
 char	*ft_base(int num, int base);
 int		get_next_line(const int fd, char **line);
+int		ft_ishexdigit(int c);
+int		ft_isupper(int c);
+int 	ft_islower(int c);
+int		ft_atoibase(char *str, int base);
 #endif

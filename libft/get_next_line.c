@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cschulle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 13:50:02 by cschulle          #+#    #+#             */
-/*   Updated: 2019/01/24 20:12:16 by cschulle         ###   ########.fr       */
+/*   Updated: 2019/06/01 11:53:48 by cschulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int		bufreader(const int fd, char **extra, char **line)
 	char			buf[BUFF_SIZE + 1];
 	size_t			i;
 
-	// ft_bzero(buf, BUFF_SIZE + 1);
 	while ((i = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[i] = '\0';

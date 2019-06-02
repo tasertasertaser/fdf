@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/08 16:02:51 by cschulle          #+#    #+#             */
-/*   Updated: 2019/05/31 14:31:25 by cschulle         ###   ########.fr       */
+/*   Created: 2019/05/30 18:18:30 by cschulle          #+#    #+#             */
+/*   Updated: 2019/05/30 18:32:20 by cschulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-**	Numerically compares the first n characters of two strings.
+**	Prints description of program error in red,
+**	using escape code macro defined in header.
+**	Resets text color using escape code macro defined in header.
+**	Exits the program.
 */
 
-#include <unistd.h>
+#include "../includes/fdf.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	error(char *description)
 {
-	size_t	i;
+	ft_putstr(P_RD);
+	ft_putendl(description);
+	ft_putstr(P_X);
 
-	i = 0;
-	if ((s1[0] == '\0' && s2[0] == '\0') || n == 0)
-		return (0);
-	while ((i + 1 != n && s1[i] == s2[i]) && (s1[i] && s2[i]))
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	exit(1);
 }

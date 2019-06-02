@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cschulle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:08:41 by cschulle          #+#    #+#             */
-/*   Updated: 2019/03/05 15:59:39 by cschulle         ###   ########.fr       */
+/*   Updated: 2019/06/01 19:36:46 by cschulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,35 @@
 #include "../libft/libft.h"
 #include <stdio.h>			// TODO: delete later
 
+/*======== testing ========*/
+
+# define TESTFILE "maps/10-2.fdf"
+
 /*======== strooocts ========*/
 
-typedef struct		s_pt
+struct	s_pt
 {
-	int				x;
-	int				y;
 	int				z;
 	int				color;
-}					t_pt;
+};					t_pt;
+
+// typedef struct	s_pt	t_pt;
+// struct	s_pt
+// {
+// 	t_pt			*previous;
+// 	int				x;
+// 	int				y;
+// 	int				z;
+// 	int				color;
+// 	t_pt			*next;
+// };
 
 typedef struct		s_map
 {
 	int				rows;
-	int				pts;
-	int				colors;
-}
+	int				columns;
+	t_pt			**points;
+}					t_map;
 
 /*======== colorstuff ========*/
 
@@ -46,13 +59,15 @@ typedef struct		s_map
 # define B(a) (a) & 0xFF
 # define RGB(a, b, c) ((a) << 16) + ((b) << 8) + (c)
 
-# define P_RED "\e[38;5;203m"
-# define P_YELLOW "\e[38;5;220m"
-# define P_GREEN "\e[38;5;112m"
-# define P_BLUE "\e[38;5;39m"
-# define P_PURPLE "\e[38;5;141m"
-# define P_GREY "\e[38;5;243m"
-# define P_XCOLOR "\e[0m"
+# define P(a) \e[38;R(a);G(a);B(a)m
+
+# define P_RD "\e[38;5;203m"
+# define P_YW "\e[38;5;220m"
+# define P_GR "\e[38;5;112m"
+# define P_BL "\e[38;5;39m"
+# define P_PR "\e[38;5;141m"
+# define P_GY "\e[38;5;240m"
+# define P_X "\e[0m"
 
 # define PNK 0xFF57A4
 # define ORN 0xF99C4F
@@ -73,7 +88,6 @@ typedef struct		s_map
 /*======== other ========*/
 
 # define UNIT 30
-# define ERRORBADTHINGS exit(1)
 # define FT_INTMAX 2147483647
 
 /*======== fn declarations ========*/
@@ -82,6 +96,8 @@ int		linelen(t_pt start, t_pt end);
 void	draw_line(t_pt start, t_pt end, void *mlx, void *window);
 void	draw_gradient_line(t_pt start, t_pt end, void *mlx, void *window);
 int		gradient(int startcolor, int endcolor, int len, int pix);
-t_pt	**parse(char *filename);
+t_map	parse(char *filename);
+void	valid_check(char *row, int columns);
+void	error(char *description);
 
 #endif

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cschulle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/05/27 18:48:34 by cschulle         ###   ########.fr        #
+#    Updated: 2019/06/01 12:04:36 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,11 +36,15 @@ SRCS = ft_memset.c	\
 	ft_strcmp.c		\
 	ft_strncmp.c	\
 	ft_atoi.c		\
+	ft_atoibase.c	\
 	ft_isalpha.c	\
 	ft_isdigit.c	\
+	ft_ishexdigit.c	\
 	ft_isalnum.c	\
 	ft_isascii.c	\
 	ft_isprint.c	\
+	ft_isupper.c	\
+	ft_islower.c	\
 	ft_toupper.c	\
 	ft_tolower.c	\
 	ft_memalloc.c	\

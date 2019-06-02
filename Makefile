@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cschulle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/03/10 19:49:06 by cschulle         ###   ########.fr        #
+#    Updated: 2019/05/30 19:26:09 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@ NAME	=	fdf
 SRCS	=	tests.c				\
 			srcs/lines.c		\
 			srcs/file_parser.c	\
-			srcs/gradient.c
+			srcs/gradient.c		\
+			srcs/valid.c		\
+			srcs/error.c
 INCLS	=	includes/fdf.h
 WFLAGS	=	-Wall -Wextra -Werror
 MLXFLAGS=	-framework OpenGL -framework AppKit
