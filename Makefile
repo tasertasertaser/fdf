@@ -19,6 +19,7 @@ SRCS	=	srcs/main.c			\
 			srcs/lines.c		\
 			srcs/draw.c			\
 			srcs/grids.c		\
+			srcs/testing.c		\
 			srcs/error.c
 INCLS	=	includes/fdf.h
 WFLAGS	=	-Wall -Wextra -Werror

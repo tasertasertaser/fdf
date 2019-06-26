@@ -14,27 +14,32 @@ void	make_prsp(t_window mr_struct, t_coord **grid, t_map *map)
 {
 	int x;
 	int y;
-	int p;
 	double unit;
+	double x_unit;
+	int y_unit;
 	t_coord origin;
 
-	origin = (t_coord){300, 300};
-	unit = 20;
+	unit = 30;
+	int xorig = (mr_struct.center_x - (unit * (map->columns/2)));
+	origin = (t_coord){xorig, 200};
 	y = 0;
-	p = 1;
+
+	mlx_pixel_put(mr_struct.mlx, mr_struct.window, origin.x, origin.y, PNK);
+
+	draw_centerline(mr_struct, 'b');
 
 	while(y < map->rows)
 	{
 		x = 0;
+		y_unit = (unit/2) + y;
 		while(x < map->columns)
 		{
-			grid[y][x].x = x < map->columns/2 ? ((x) * unit) - y + origin.x : (x * (unit)) + origin.x;
-			grid[y][x].y = (y * unit) + origin.y;
-			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, 0xFFFFFF);
+			x_unit = unit + ((y * y_unit)/5);
+			grid[y][x].x = ((x * unit) + origin.x) < mr_struct.center_x ? ((mr_struct.center_x - ((x + 1) * x_unit))) : ((mr_struct.center_x + ((x - (map->columns / 2)) * x_unit)));
+			grid[y][x].y = (y * y_unit) + origin.y;
+			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, BLU);
 			x++;
-			
 		}
-		p += p;
 		y++;
 	}
 }
@@ -71,24 +76,23 @@ void	make_orth(t_window mr_struct, t_coord **grid, t_map *map)
 	double unit;
 	t_coord origin;
 
-	origin = (t_coord){300, 300};
-	unit = 6;
+	origin = (t_coord){440, 200};
+	unit = 40;
 	y = 0;
 
 	while(y < map->rows)
 	{
 		x = 0;
-		printf(P_YW"y = %d\n"P_X, y);
 		while(x < map->columns)
 		{
-			printf(P_RD"x = %d\n"P_X, x);
-			grid[y][x].x = x * unit;
-			grid[y][x].y = y * unit;
+			grid[y][x].x = (x * unit) + origin.x;
+			grid[y][x].y = (y * unit) + origin.y;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, 0xFFFFFF);
 			x++;
 		}
 		y++;
 	}
+	
 }
 
 t_coord **malloc_grid(t_map *map)

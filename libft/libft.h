@@ -125,4 +125,5 @@ int		ft_isupper(int c);
 int 	ft_islower(int c);
 int		ft_atoibase(char *str, int base);
 char	*ft_strjoinfree(char *old, char *new);
+char	*scoot(char *string, char delimiter);
 #endif

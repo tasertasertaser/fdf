@@ -128,5 +128,6 @@ void	free_2D(char **array);
 void	print_flat_map(t_window wnd, t_map *map);
 void	print_iso_map(t_window wnd, t_map *map);
 t_coord	**create_grid(t_window wnd, t_map *map, char projection);
+void	draw_centerline(t_window mr_struct, char axis);
 
 #endif

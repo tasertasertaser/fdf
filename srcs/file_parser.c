@@ -28,29 +28,28 @@ void	process_filestring(char *filestring, t_map *map)
 	int y;
 	int x;
 	int i;
-	char **pts;
+	char *pt;
 
 	y = 0;
 	i = 0;
 
 	printf("processing "P_YW"%s\n"P_X, filestring);
-	pts = ft_strsplit(filestring, ' ');
+	//pt = ft_strsplit(filestring, ' '); // TODO: fix this; make it process the chunks of string instead of splitting the string
+	pt = filestring;
 	while (y < map->rows)
 	{
 		x = 0;
 		while (x < map->columns)
 		{
-			printf(P_GY"%s "P_X, pts[i]);
-			fill_point(pts[i], &map->points[y][x]);
-			// printf(P_GR"%d "P_X, map->points[y][x].z);
-			i++;
+			fill_point(pt, &map->points[y][x]);
+			printf(P_GY"%d "P_X, map->points[y][x].z);
+			pt = scoot(pt, ' ');
 			x++;
 		}		
 		y++;
 		printf("\n");
 	}
 	free(filestring);
-	free_2D(pts);
 }
 
 /*

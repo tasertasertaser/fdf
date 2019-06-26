@@ -32,14 +32,18 @@ int	main(int ac, char **av)
 {
 	if(ac == 2)
 	{
-		t_map	*map = parse(av[1]);
-		void *mlx_ptr = mlx_init();
-		void *windowptr = mlx_new_window(mlx_ptr, WINDOW_W, WINDOW_H, "fdf");
-		t_window mr_struct = {"fdf", WINDOW_W / 2, WINDOW_H / 2, windowptr, mlx_ptr};
-		create_grid(mr_struct, map, 'p');
-		mlx_hook(windowptr, 2, (1L<<0), key_press, &mr_struct);
+		parse(av[1]);
+		// t_map	*map = parse(av[1]);
+		// void *mlx_ptr = mlx_init();
+		// void *windowptr = mlx_new_window(mlx_ptr, WINDOW_W, WINDOW_H, "fdf");
+		// t_window mr_struct = {"fdf", WINDOW_W / 2, WINDOW_H / 2, windowptr, mlx_ptr};
 
-		mlx_loop(mlx_ptr);
+		// //void *image = mlx_new_image (mlx_ptr, WINDOW_W, WINDOW_H);
+
+		// create_grid(mr_struct, map, 'p');
+		// mlx_hook(windowptr, 2, (1L<<0), key_press, &mr_struct);
+
+		// mlx_loop(mlx_ptr);
 	}
 	else
 		give_usage();
