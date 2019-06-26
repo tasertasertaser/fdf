@@ -6,7 +6,7 @@
 /*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 15:41:07 by cschulle          #+#    #+#             */
-/*   Updated: 2019/06/01 11:47:13 by cschulle         ###   ########.fr       */
+/*   Updated: 2019/06/06 21:00:46 by cschulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,5 @@ int		ft_ishexdigit(int c);
 int		ft_isupper(int c);
 int 	ft_islower(int c);
 int		ft_atoibase(char *str, int base);
+char	*ft_strjoinfree(char *old, char *new);
 #endif

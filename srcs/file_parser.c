@@ -1,101 +1,140 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_parser.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/06 11:33:31 by cschulle          #+#    #+#             */
+/*   Updated: 2019/06/08 20:46:17 by cschulle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/fdf.h"
 
-
-t_pt	*make_point(char *str, int x, int y)
+t_pt	*fill_point(char *str, t_pt *point)
 {
-	t_pt	*point;
-
-	if (!(point = malloc(sizeof(t_pt))))
-		error("insufficient memory.");
-	point->z = ft_atoi(str);
-	point->x = x;
-	point->y = y;
 	char	*color;
+
+	point->z = ft_atoi(str);
 	if ((color = ft_strchr(str, ',')))
 		point->color = (ft_atoibase(color, 16));
-	point->previous = NULL;
-	point->next = NULL;
-
+	else point->color = 0xFFFFFF; // TODO: write a function that assigns color based on z value
 	return (point);
 }
 
-void	double_list_add(t_pt *point, t_pt *list)
+void	process_filestring(char *filestring, t_map *map)
 {
-	t_pt	*start;
+	int y;
+	int x;
+	int i;
+	char **pts;
 
-	start = list;
-	while (list->next != NULL)
-		list = list->next;
-	list->next = point;
-	point->previous = list;
-	point->next = NULL;
-	list = start;
+	y = 0;
+	i = 0;
+
+	printf("processing "P_YW"%s\n"P_X, filestring);
+	pts = ft_strsplit(filestring, ' ');
+	while (y < map->rows)
+	{
+		x = 0;
+		while (x < map->columns)
+		{
+			printf(P_GY"%s "P_X, pts[i]);
+			fill_point(pts[i], &map->points[y][x]);
+			// printf(P_GR"%d "P_X, map->points[y][x].z);
+			i++;
+			x++;
+		}		
+		y++;
+		printf("\n");
+	}
+	free(filestring);
+	free_2D(pts);
 }
 
-t_pt	*add_row(char *row, t_pt *pointlist, int y)
+/*
+**	Combines current file row and filestring, adding separating space.
+*/
+char	*add_row(char *s1, char *s2)
 {
-	char	**points;
-	int		x;
+	char	*tmp;
 
+	tmp = ft_strdup(s2);
+	tmp = ft_strjoinfree(tmp, " ");
+		s1 = ft_strjoinfree(s1, tmp);
+	free(s2);
+	return (s1);
+}
+
+/*
+**	Allocates sufficient memory for map's 2-D array of points.
+*/
+void	malloc_map(t_map *map)
+{
+	int	y;
+	int	x;
+
+	y = 0;
 	x = 0;
-	if ((points = ft_strsplit(row, ' ')) == NULL)
-		error("failed ft_strsplit in add_row().");
-	while (points[x])
+	if (!(map->points = malloc(sizeof(t_pt *) * map->rows)))
+		error("failed parse: not enough memory.");
+	while (y != map->rows)
 	{
-		if (!pointlist)
-			pointlist = make_point(points[x], x, y);
-		else
-			double_list_add(make_point(points[x], x, y), pointlist);
-		x++;
+		while (x != map->columns)
+		{
+			if (!(map->points[y] = malloc(sizeof(t_pt) * map->columns)))
+				error("failed parse: not enough memory.");
+			x++;
+		}
+		x = 0;
+		y++;
 	}
-	return (pointlist);
 }
 
-void	print_points(t_pt *pointlist)
+/*
+**	Reads the entire file into a single string with get_next_line.
+**	Calls valid_check on each row as it goes to verify the file.
+**	Declares a new t_map struct and stores map information.
+**	Calls process_filestring to turn the file string into a 2D t_pt array.
+*/
+t_map	*new_map(char *filename)
 {
-	t_pt	*cursor;
-
-	cursor = pointlist;
-	while (cursor != NULL)
-	{
-		if (cursor->previous && cursor->y != cursor->previous->y)
-			printf("\n");
-		printf(" %d", cursor->z);
-		cursor = cursor->next;
-	}
-	printf("\n");
-}
-
-t_map	new_map(char *filename)
-{
+	t_map	*map;
 	int		fd;
 	char	*line;
-	t_map	map;
+	char	*filestring;
 
+	if(!(map = malloc(sizeof(t_map))))
+		error("failed parse: not enough memory.");
+	map->rows = 0;
+	map->points = NULL;
+	filestring = NULL;
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		error("couldn't open file.");
-	map.rows = 0;
-	map.points = NULL;
 	while ((get_next_line(fd, &line)) == 1)
 	{
-		if (map.rows == 0)
-			map.columns = ft_wordcount(line, ' ');
-		valid_check(line, map.columns);
-		map.points = add_row(line, map.points, map.rows);
-		map.rows++;
+		if (map->rows == 0)
+			map->columns = ft_wordcount(line, ' ');
+		valid_check(line, map->columns);
+		filestring = add_row(filestring, line);
+		//printf(P_BL"%s•\n", filestring);
+		map->rows++;
 	}
-	free(line);
 	close(fd);
+	malloc_map(map);
+	process_filestring(filestring, map);
 	return(map);
 }
 
-t_map	parse(char *filename)
+/*
+**	Control center for parsing functions.
+*/
+t_map	*parse(char *filename)
 {
-	t_map	map;
+	t_map	*map;
 
 	map = new_map(filename);
-
-	print_points(map.points);
 	// get_pts(map, filename, rows);
 
 

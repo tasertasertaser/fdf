@@ -6,14 +6,14 @@
 #    By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/06/01 12:04:36 by cschulle         ###   ########.fr        #
+#    Updated: 2019/06/06 19:02:56 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
-GREY := \033[38;5;237m
+YLW := \033[38;5;214m
 BLUE = \033[38;5;38m
-WHITE := \033[0m 
+RST := \033[0m 
 SRCS = ft_memset.c	\
 	ft_bzero.c		\
 	ft_memcpy.c		\
@@ -60,6 +60,7 @@ SRCS = ft_memset.c	\
 	ft_strnequ.c	\
 	ft_strsub.c		\
 	ft_strjoin.c	\
+	ft_strjoinfree.c\
 	ft_strtrim.c	\
 	ft_strsplit.c	\
 	ft_itoa.c		\
@@ -95,28 +96,28 @@ all : $(NAME)
 $(NAME) : 
 	@gcc -c -Wall -Wextra -Werror $(SRCS)
 	@ar rcs $(NAME) $(OBJS)
-	@echo "$(GREY)<< library created >>$(WHITE)"
+	@echo "$(YLW)<< library created >>$(RST)"
 
 clean : 
 	@rm -f $(OBJS)
-	@echo "$(GREY)<< object files cleaned >>$(WHITE)"
+	@echo "$(YLW)<< object files cleaned >>$(RST)"
 
 fclean : clean
 	@rm -f $(NAME)
-	@echo "$(GREY)<< library cleaned >>$(WHITE)"	
+	@echo "$(YLW)<< library cleaned >>$(RST)"	
 
 testclean : fclean
 	@rm -f test
-	@echo "$(GREY)<< test files cleaned >>$(WHITE)"
+	@echo "$(YLW)<< test files cleaned >>$(RST)"
 
 re : fclean all
-	@echo "$(GREY)<< library rebuilt >>$(WHITE)"
+	@echo "$(YLW)<< library rebuilt >>$(RST)"
 
 test : re
 	@gcc -L. libft.a -o test main.c
-	@echo "$(GREY)<< testfile compiled >>$(WHITE)"
+	@echo "$(YLW)<< testfile compiled >>$(RST)"
 
 LLDB : 
 	@gcc -g *.c
-	@echo "$(BLUE)<< debug generated >>$(WHITE)"
+	@echo "$(BLUE)<< debug generated >>$(RST)"
 	# @lldb a.out

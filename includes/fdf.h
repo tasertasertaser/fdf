@@ -6,7 +6,7 @@
 /*   By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:08:41 by cschulle          #+#    #+#             */
-/*   Updated: 2019/06/01 19:36:46 by cschulle         ###   ########.fr       */
+/*   Updated: 2019/06/08 20:52:27 by cschulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include "../mlx/mlx.h"
 #include "../libft/libft.h"
+#include <math.h>
 #include <stdio.h>			// TODO: delete later
 
 /*======== testing ========*/
@@ -28,29 +29,48 @@
 
 /*======== strooocts ========*/
 
-struct	s_pt
+typedef	struct		s_pt
 {
 	int				z;
 	int				color;
-};					t_pt;
+}					t_pt;
 
-// typedef struct	s_pt	t_pt;
-// struct	s_pt
-// {
-// 	t_pt			*previous;
-// 	int				x;
-// 	int				y;
-// 	int				z;
-// 	int				color;
-// 	t_pt			*next;
-// };
+typedef	struct		s_coord
+{
+	int				x;
+	int				y;
+}					t_coord;
+
+typedef struct		s_line
+{
+	int				y[2];
+	int				x[2];
+	void			*mlx;
+	void			*window;
+}					t_line;
 
 typedef struct		s_map
 {
 	int				rows;
 	int				columns;
+	int				max_z;
+	int				min_z;
 	t_pt			**points;
 }					t_map;
+
+typedef struct		s_window
+{
+	char			*title;
+	int				center_x;
+	int				center_y;
+	void			*window;
+	void			*mlx;
+}					t_window;
+
+/*======== MLX things ========*/
+
+# define WINDOW_W 1280
+# define WINDOW_H 720
 
 /*======== colorstuff ========*/
 
@@ -78,6 +98,10 @@ typedef struct		s_map
 # define PRP 0x9F29FF
 # define WHT 0xFFFFFF
 
+# define MAXCOLOR PNK
+# define MINCOLOR YLW
+# define COLORS_ON 1
+
 /*======== special keys ========*/
 
 # define F_KEY 3
@@ -87,17 +111,22 @@ typedef struct		s_map
 
 /*======== other ========*/
 
-# define UNIT 30
 # define FT_INTMAX 2147483647
+# define UNIT 30
 
 /*======== fn declarations ========*/
 
-int		linelen(t_pt start, t_pt end);
-void	draw_line(t_pt start, t_pt end, void *mlx, void *window);
-void	draw_gradient_line(t_pt start, t_pt end, void *mlx, void *window);
-int		gradient(int startcolor, int endcolor, int len, int pix);
-t_map	parse(char *filename);
+//int		int linelen(t_line *line);
+void	draw_line(t_line line);
+//void	draw_gradient_line(t_pt start, t_pt end, void *mlx, void *window);
+//int		gradient(int startcolor, int endcolor, int len, int pix);
+t_map	*parse(char *filename);
 void	valid_check(char *row, int columns);
 void	error(char *description);
+void	ft_strcjoinfree(char **old, char *new, char c);
+void	free_2D(char **array);
+void	print_flat_map(t_window wnd, t_map *map);
+void	print_iso_map(t_window wnd, t_map *map);
+t_coord	**create_grid(t_window wnd, t_map *map, char projection);
 
 #endif

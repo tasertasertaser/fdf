@@ -6,16 +6,19 @@
 #    By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/05/30 19:26:09 by cschulle         ###   ########.fr        #
+#    Updated: 2019/06/08 20:45:45 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
-SRCS	=	tests.c				\
-			srcs/lines.c		\
+SRCS	=	srcs/main.c			\
 			srcs/file_parser.c	\
-			srcs/gradient.c		\
+			srcs/colors.c		\
 			srcs/valid.c		\
+			srcs/frees.c		\
+			srcs/lines.c		\
+			srcs/draw.c			\
+			srcs/grids.c		\
 			srcs/error.c
 INCLS	=	includes/fdf.h
 WFLAGS	=	-Wall -Wextra -Werror
@@ -56,5 +59,3 @@ test : re
 debug : 
 	@gcc -g $(MLXFLAGS) $(SRCS) $(LIBS) -o DEBUGfdf
 	@echo "$(BLUE)<< debug symbols compiled >>$(WHITE)"
-	@echo "$(BLUE)<< running lldb ./DEBUGfdf >>$(WHITE)"
-	@lldb DEBUGfdf
