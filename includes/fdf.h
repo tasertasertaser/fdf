@@ -58,14 +58,17 @@ typedef struct		s_map
 	t_pt			**points;
 }					t_map;
 
-typedef struct		s_window
+typedef struct		s_bigstruct
 {
-	char			*title;
 	int				center_x;
 	int				center_y;
 	void			*window;
 	void			*mlx;
-}					t_window;
+	t_map			*map;
+	char			proj;
+	t_coord			origin;
+
+}					t_bigstruct;
 
 /*======== MLX things ========*/
 
@@ -96,6 +99,7 @@ typedef struct		s_window
 # define AQU 0x43FFB5
 # define BLU 0x53ADFC
 # define PRP 0x9F29FF
+# define GRY 0x404040
 # define WHT 0xFFFFFF
 
 # define MAXCOLOR PNK
@@ -104,9 +108,12 @@ typedef struct		s_window
 
 /*======== special keys ========*/
 
-# define F_KEY 3
-# define J_KEY 38
-# define K_KEY 39
+# define I_KEY 34
+# define O_KEY 31
+# define P_KEY 35
+# define D_KEY 2
+# define A_KEY 0
+# define H_KEY 4
 # define ESC_KEY 53
 
 /*======== other ========*/
@@ -125,9 +132,10 @@ void	valid_check(char *row, int columns);
 void	error(char *description);
 void	ft_strcjoinfree(char **old, char *new, char c);
 void	free_2D(char **array);
-void	print_flat_map(t_window wnd, t_map *map);
-void	print_iso_map(t_window wnd, t_map *map);
-t_coord	**create_grid(t_window wnd, t_map *map, char projection);
-void	draw_centerline(t_window mr_struct, char axis);
+void	print_flat_map(t_bigstruct wnd, t_map *map);
+void	print_iso_map(t_bigstruct wnd, t_map *map);
+t_coord	**create_grid(t_bigstruct wnd, t_map *map, char projection);
+void	draw_centerline(t_bigstruct mr_struct, char axis);
+int		key_press(int key, t_bigstruct *mr_struct);
 
 #endif

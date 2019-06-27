@@ -5,7 +5,7 @@
 **	Pass 'x' as axis for vertical center, 'y' for horizontal center, 'b' for both.
 */
 
-void	draw_centerline(t_window mr_struct, char axis)
+void	draw_centerline(t_bigstruct mr_struct, char axis)
 {
 	if (axis == 'x' || axis == 'b')
 	{	

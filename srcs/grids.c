@@ -10,23 +10,21 @@
 
 // }
 // http://faculty.cs.tamu.edu/jchai/cpsc641_spring10/PerspectiveProjection.pdf
-void	make_prsp(t_window mr_struct, t_coord **grid, t_map *map)
+void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 {
 	int x;
 	int y;
 	double unit;
 	double x_unit;
 	int y_unit;
-	t_coord origin;
 
 	unit = 30;
-	int xorig = (mr_struct.center_x - (unit * (map->columns/2)));
-	origin = (t_coord){xorig, 200};
+	if (mr_struct.origin.x == 0 && mr_struct.origin.y == 0)
+		mr_struct.origin.x = (mr_struct.center_x - (unit * (map->columns/2)));
+	mr_struct.origin.y = 200;
 	y = 0;
 
-	mlx_pixel_put(mr_struct.mlx, mr_struct.window, origin.x, origin.y, PNK);
-
-	draw_centerline(mr_struct, 'b');
+	// draw_centerline(mr_struct, 'b');
 
 	while(y < map->rows)
 	{
@@ -35,8 +33,8 @@ void	make_prsp(t_window mr_struct, t_coord **grid, t_map *map)
 		while(x < map->columns)
 		{
 			x_unit = unit + ((y * y_unit)/5);
-			grid[y][x].x = ((x * unit) + origin.x) < mr_struct.center_x ? ((mr_struct.center_x - ((x + 1) * x_unit))) : ((mr_struct.center_x + ((x - (map->columns / 2)) * x_unit)));
-			grid[y][x].y = (y * y_unit) + origin.y;
+			grid[y][x].x = ((x * unit) + mr_struct.origin.x) < mr_struct.center_x ? ((mr_struct.center_x - ((x + 1) * x_unit))) : ((mr_struct.center_x + ((x - (map->columns / 2)) * x_unit)));
+			grid[y][x].y = (y * y_unit) + mr_struct.origin.y;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, BLU);
 			x++;
 		}
@@ -44,14 +42,12 @@ void	make_prsp(t_window mr_struct, t_coord **grid, t_map *map)
 	}
 }
 
-void	make_iso(t_window mr_struct, t_coord **grid, t_map *map)
+void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 {
 	int x;
 	int y;
 	double unit;
-	t_coord origin;
 
-	origin = (t_coord){300, 200};
 	unit = 40;
 	y = 0;
 	
@@ -60,23 +56,21 @@ void	make_iso(t_window mr_struct, t_coord **grid, t_map *map)
 		x = 0;
 		while(x < map->columns)
 		{
-			grid[y][x].x = (((x - y) * cos(0.523599)) * unit) + origin.x;
-			grid[y][x].y = (((x + y) * sin(0.523599)) * unit) + origin.y;
-			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, 0xFFFFFF);
+			grid[y][x].x = (((x - y) * cos(0.523599)) * unit) + mr_struct.origin.x;
+			grid[y][x].y = (((x + y) * sin(0.523599)) * unit) + mr_struct.origin.y;
+			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, PNK);
 			x++;
 		}
 		y++;
 	}
 }
 
-void	make_orth(t_window mr_struct, t_coord **grid, t_map *map)
+void	make_orth(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 {
 	int x;
 	int y;
 	double unit;
-	t_coord origin;
 
-	origin = (t_coord){440, 200};
 	unit = 40;
 	y = 0;
 
@@ -85,8 +79,8 @@ void	make_orth(t_window mr_struct, t_coord **grid, t_map *map)
 		x = 0;
 		while(x < map->columns)
 		{
-			grid[y][x].x = (x * unit) + origin.x;
-			grid[y][x].y = (y * unit) + origin.y;
+			grid[y][x].x = (x * unit) + mr_struct.origin.x;
+			grid[y][x].y = (y * unit) + mr_struct.origin.y;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, 0xFFFFFF);
 			x++;
 		}
@@ -114,7 +108,7 @@ t_coord **malloc_grid(t_map *map)
 	return(grid);
 }
 
-t_coord	**create_grid(t_window mr_struct, t_map *map, char projection)
+t_coord	**create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 {
 	t_coord	**grid;
 	int		i;

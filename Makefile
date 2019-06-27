@@ -20,6 +20,7 @@ SRCS	=	srcs/main.c			\
 			srcs/draw.c			\
 			srcs/grids.c		\
 			srcs/testing.c		\
+			srcs/keys.c			\
 			srcs/error.c
 INCLS	=	includes/fdf.h
 WFLAGS	=	-Wall -Wextra -Werror

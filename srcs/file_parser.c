@@ -34,7 +34,6 @@ void	process_filestring(char *filestring, t_map *map)
 	i = 0;
 
 	printf("processing "P_YW"%s\n"P_X, filestring);
-	//pt = ft_strsplit(filestring, ' '); // TODO: fix this; make it process the chunks of string instead of splitting the string
 	pt = filestring;
 	while (y < map->rows)
 	{

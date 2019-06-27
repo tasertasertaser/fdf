@@ -16,7 +16,7 @@
 **	Draws an orthographic (top-down) projection of the map
 */
 
-void	print_flat_map(t_window wnd, t_map *map)
+void	print_flat_map(t_bigstruct wnd, t_map *map)
 {
 	int x;
 	int y;
@@ -60,7 +60,7 @@ void	print_flat_map(t_window wnd, t_map *map)
 **		that seems like it's way too many operations & will make the program too slow to run?
 */
 
-void	print_iso_map(t_window wnd, t_map *map)
+void	print_iso_map(t_bigstruct wnd, t_map *map)
 {
 	int x;
 	int ix;
