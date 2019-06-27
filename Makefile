@@ -6,7 +6,7 @@
 #    By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/06/08 20:45:45 by cschulle         ###   ########.fr        #
+#    Updated: 2019/06/26 21:04:01 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,5 +59,5 @@ test : re
 	@echo "$(GREY)<< testfile compiled >>$(WHITE)"
 
 debug : 
-	@gcc -g $(MLXFLAGS) $(SRCS) $(LIBS) -o DEBUGfdf
+	@gcc -fsanitize=address -g $(MLXFLAGS) $(SRCS) $(LIBS) -o DEBUGfdf
 	@echo "$(BLUE)<< debug symbols compiled >>$(WHITE)"

@@ -10,8 +10,25 @@ static const char *g_helpstring[] = {
 	"[I][O][P]    -> Projection (Iso <> Ortho <> Perspective)\n",
 	"[W][A][S][D] -> Move the map\n",
 	"[H]          -> Help\n",
-	"[=]          -> Secret bonus mode",
+	"[=]          -> Secret bonus mode\n",
 };
+
+void	give_usage()
+{
+	size_t i;
+
+	i = 0;
+	ft_putstr(P_BL);
+	ft_putstr("\nUsage:\n\t");
+	ft_putstr(" ./fdf \"filename.fdf\"\n\n");
+	ft_putstr(P_GY);
+	while (i < sizeof(g_helpstring)/sizeof(g_helpstring[0]))
+	{
+		ft_putstr(g_helpstring[i]);
+		i++;
+	}
+	ft_putstr(P_X);
+}
 
 void	help(t_bigstruct *mr_struct)
 {
@@ -60,6 +77,18 @@ int key_press(int key, t_bigstruct *mr_struct)
 	if (key == D_KEY)
 	{
 		mr_struct->origin.x += 10;
+		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	}
+	if (key == J_KEY)
+	{
+		mr_struct->z_mod--;
+		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	}
+	if (key == K_KEY)
+	{
+		mr_struct->z_mod++;
 		mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}

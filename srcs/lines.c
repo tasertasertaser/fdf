@@ -12,6 +12,51 @@
 
 #include "../includes/fdf.h"
 
+void	connect(t_coord **grid, t_bigstruct mr_struct)
+{
+	int x;
+	int y;
+	t_line	line;
+
+	line.mlx = mr_struct.mlx;
+	line.window = mr_struct.window;
+	x = 0;
+	y = 0;
+
+	line.x[0] = grid[y][x].x;
+	line.x[1] = grid[y][x + 1].x;
+	line.y[0] = grid[y][x].y;
+	line.y[1] = grid[y][x + 1].y;
+	draw_line(line);
+
+	// y = 0;
+	// while(y < mr_struct.map->rows)
+	// {
+	// 	x = 0;
+	// 	while(x < mr_struct.map->columns)
+	// 	{
+	// 		if(x + 1 <= mr_struct.map->columns)
+	// 		{
+	// 			line.x[0] = grid[y][x].x;
+	// 			line.x[1] = grid[y][x + 1].x;
+	// 			line.y[0] = grid[y][x].y;
+	// 			line.y[1] = grid[y][x + 1].y;
+	// 			draw_line(line);
+	// 		}
+	// 		if(y + 1 <= mr_struct.map->rows)
+	// 		{
+	// 			line.x[0] = grid[y][x].x;
+	// 			line.x[1] = grid[y + 1][x].x;
+	// 			line.y[0] = grid[y][x].y;
+	// 			line.y[1] = grid[y + 1][x].y;
+	// 			draw_line(line);
+	// 		}
+	// 		x++;
+	// 	}
+	// 	y++;
+	// }
+}
+
 void	draw_line(t_line line)
 {
 	int		x;

@@ -16,25 +16,30 @@ void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 	int y;
 	double unit;
 	double x_unit;
-	int y_unit;
+	double y_unit;
+	double x_shift;
 
 	unit = 30;
 	if (mr_struct.origin.x == 0 && mr_struct.origin.y == 0)
-		mr_struct.origin.x = (mr_struct.center_x - (unit * (map->columns/2)));
-	mr_struct.origin.y = 200;
+	{
+		mr_struct.origin.x = mr_struct.center_x - (((double)map->columns / 2) * unit);
+		mr_struct.origin.y = 200;
+	}
 	y = 0;
 
+		x_shift = unit;
 	// draw_centerline(mr_struct, 'b');
-
 	while(y < map->rows)
 	{
 		x = 0;
 		y_unit = (unit/2) + y;
+		x_unit = unit + (((double)y * y_unit)/5);
+		x_shift = (double)y * ((((mr_struct.center_x - mr_struct.origin.x)) / unit) + y_unit);
 		while(x < map->columns)
 		{
-			x_unit = unit + ((y * y_unit)/5);
-			grid[y][x].x = ((x * unit) + mr_struct.origin.x) < mr_struct.center_x ? ((mr_struct.center_x - ((x + 1) * x_unit))) : ((mr_struct.center_x + ((x - (map->columns / 2)) * x_unit)));
-			grid[y][x].y = (y * y_unit) + mr_struct.origin.y;
+			//grid[y][x].x = ((x * unit) + mr_struct.origin.x) < mr_struct.center_x ? ((mr_struct.center_x - ((x + 1) * x_unit))) : ((mr_struct.center_x + ((x - (map->columns / 2)) * x_unit)));
+			grid[y][x].x = (mr_struct.origin.x + (x * x_unit)) - x_shift;
+			grid[y][x].y = ((y * y_unit) + mr_struct.origin.y) - (map->points[y][x].z * y_unit);
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, BLU);
 			x++;
 		}
@@ -57,7 +62,7 @@ void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 		while(x < map->columns)
 		{
 			grid[y][x].x = (((x - y) * cos(0.523599)) * unit) + mr_struct.origin.x;
-			grid[y][x].y = (((x + y) * sin(0.523599)) * unit) + mr_struct.origin.y;
+			grid[y][x].y = (((x + y) * sin(0.523599)) * unit) + mr_struct.origin.y - (map->points[y][x].z) * mr_struct.z_mod;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, PNK);
 			x++;
 		}
@@ -126,6 +131,7 @@ t_coord	**create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 	else
 		error("something's wrong in create_grid - invalid grid type\n");
 
+	connect(grid, mr_struct);
 	return(grid);
 }
 

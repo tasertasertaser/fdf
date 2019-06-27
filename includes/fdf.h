@@ -67,6 +67,7 @@ typedef struct		s_bigstruct
 	t_map			*map;
 	char			proj;
 	t_coord			origin;
+	int				z_mod;
 
 }					t_bigstruct;
 
@@ -114,6 +115,8 @@ typedef struct		s_bigstruct
 # define D_KEY 2
 # define A_KEY 0
 # define H_KEY 4
+# define J_KEY 38
+# define K_KEY 40
 # define ESC_KEY 53
 
 /*======== other ========*/
@@ -137,5 +140,6 @@ void	print_iso_map(t_bigstruct wnd, t_map *map);
 t_coord	**create_grid(t_bigstruct wnd, t_map *map, char projection);
 void	draw_centerline(t_bigstruct mr_struct, char axis);
 int		key_press(int key, t_bigstruct *mr_struct);
-
+void	give_usage(void);
+void	connect(t_coord **grid, t_bigstruct mr_struct);
 #endif
