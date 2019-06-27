@@ -28,23 +28,25 @@ void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 	y = 0;
 
 		x_shift = unit;
-	// draw_centerline(mr_struct, 'b');
+	
 	while(y < map->rows)
 	{
 		x = 0;
 		y_unit = (unit/2) + y;
-		x_unit = unit + (((double)y * y_unit)/5);
+		x_unit = (((double)y * y_unit));
 		x_shift = (double)y * ((((mr_struct.center_x - mr_struct.origin.x)) / unit) + y_unit);
 		while(x < map->columns)
 		{
 			//grid[y][x].x = ((x * unit) + mr_struct.origin.x) < mr_struct.center_x ? ((mr_struct.center_x - ((x + 1) * x_unit))) : ((mr_struct.center_x + ((x - (map->columns / 2)) * x_unit)));
 			grid[y][x].x = (mr_struct.origin.x + (x * x_unit)) - x_shift;
-			grid[y][x].y = ((y * y_unit) + mr_struct.origin.y) - (map->points[y][x].z * y_unit);
+			grid[y][x].y = ((y * y_unit) + mr_struct.origin.y); // - (map->points[y][x].z * y_unit);
+			grid[y][x].color = map->points[y][x].color;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, BLU);
 			x++;
 		}
 		y++;
 	}
+	draw_line((t_line){{grid[0][1].y, grid[map->rows - 1][1].y, WHT}, {grid[0][1].x, grid[map->rows - 1][1].x, WHT}}, mr_struct);
 }
 
 void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map)
@@ -63,6 +65,7 @@ void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 		{
 			grid[y][x].x = (((x - y) * cos(0.523599)) * unit) + mr_struct.origin.x;
 			grid[y][x].y = (((x + y) * sin(0.523599)) * unit) + mr_struct.origin.y - (map->points[y][x].z) * mr_struct.z_mod;
+			grid[y][x].color = map->points[y][x].color;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, PNK);
 			x++;
 		}
@@ -86,6 +89,7 @@ void	make_orth(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 		{
 			grid[y][x].x = (x * unit) + mr_struct.origin.x;
 			grid[y][x].y = (y * unit) + mr_struct.origin.y;
+			grid[y][x].color = map->points[y][x].color;
 			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, 0xFFFFFF);
 			x++;
 		}
@@ -122,6 +126,8 @@ t_coord	**create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 
 	grid = malloc_grid(map);
 	
+	draw_centerline(mr_struct, 'b');
+
 	if (projection == 'o')
 		make_orth(mr_struct, grid, map);
 	else if (projection == 'i')

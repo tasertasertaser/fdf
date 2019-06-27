@@ -39,15 +39,22 @@ typedef	struct		s_coord
 {
 	int				x;
 	int				y;
+	int				color;
 }					t_coord;
 
 typedef struct		s_line
 {
-	int				y[2];
-	int				x[2];
-	void			*mlx;
-	void			*window;
+	t_coord			a;
+	t_coord			b;
 }					t_line;
+
+typedef struct		s_lineshit
+{
+	double			slope;
+	int				intercept;
+	int				sign;
+	int				len;
+}					t_lineshit;
 
 typedef struct		s_map
 {
@@ -127,7 +134,7 @@ typedef struct		s_bigstruct
 /*======== fn declarations ========*/
 
 //int		int linelen(t_line *line);
-void	draw_line(t_line line);
+void	draw_line(t_line line, t_bigstruct mr_struct);
 //void	draw_gradient_line(t_pt start, t_pt end, void *mlx, void *window);
 //int		gradient(int startcolor, int endcolor, int len, int pix);
 t_map	*parse(char *filename);
@@ -142,4 +149,6 @@ void	draw_centerline(t_bigstruct mr_struct, char axis);
 int		key_press(int key, t_bigstruct *mr_struct);
 void	give_usage(void);
 void	connect(t_coord **grid, t_bigstruct mr_struct);
+void	draw_linestar(t_bigstruct mr_struct);
+int		gradient(int startcolor, int endcolor, int len, int pos);
 #endif

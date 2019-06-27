@@ -18,16 +18,14 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	int y;
 	t_line	line;
 
-	line.mlx = mr_struct.mlx;
-	line.window = mr_struct.window;
 	x = 0;
 	y = 0;
 
-	line.x[0] = grid[y][x].x;
-	line.x[1] = grid[y][x + 1].x;
-	line.y[0] = grid[y][x].y;
-	line.y[1] = grid[y][x + 1].y;
-	draw_line(line);
+	line.a.x = grid[y][x].x;
+	line.b.x = grid[y][x + 1].x;
+	line.a.y = grid[y][x].y;
+	line.b.y = grid[y][x + 1].y;
+	draw_line(line, mr_struct);
 
 	// y = 0;
 	// while(y < mr_struct.map->rows)
@@ -37,18 +35,18 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	// 	{
 	// 		if(x + 1 <= mr_struct.map->columns)
 	// 		{
-	// 			line.x[0] = grid[y][x].x;
-	// 			line.x[1] = grid[y][x + 1].x;
-	// 			line.y[0] = grid[y][x].y;
-	// 			line.y[1] = grid[y][x + 1].y;
+	// 			line.a.x = grid[y][x].x;
+	// 			line.b.x = grid[y][x + 1].x;
+	// 			line.a.y = grid[y][x].y;
+	// 			line.b.y = grid[y][x + 1].y;
 	// 			draw_line(line);
 	// 		}
 	// 		if(y + 1 <= mr_struct.map->rows)
 	// 		{
-	// 			line.x[0] = grid[y][x].x;
-	// 			line.x[1] = grid[y + 1][x].x;
-	// 			line.y[0] = grid[y][x].y;
-	// 			line.y[1] = grid[y + 1][x].y;
+	// 			line.a.x = grid[y][x].x;
+	// 			line.b.x = grid[y + 1][x].x;
+	// 			line.a.y = grid[y][x].y;
+	// 			line.b.y = grid[y + 1][x].y;
 	// 			draw_line(line);
 	// 		}
 	// 		x++;
@@ -57,40 +55,54 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	// }
 }
 
-void	draw_line(t_line line)
+void	draw_xline(t_line line, t_lineshit lineshit, t_bigstruct mr_struct)
+{	
+	int x;
+	int y;
+	int color;
+	
+	lineshit.len = line.b.x - line.a.x;
+	x = line.a.x;
+	while(x != line.b.x)
+	{
+		y = (lineshit.slope * x) + lineshit.intercept;
+		color = gradient(line.a.color, line.b.color, lineshit.len, x - line.a.x);
+		mlx_pixel_put(mr_struct.mlx, mr_struct.window, x, y, color);
+		x += lineshit.sign;
+	}
+}
+
+void	draw_yline(t_line line, t_lineshit lineshit, t_bigstruct mr_struct)
 {
-	int		x;
-	int		y;
-	double	slope;
-	int		intercept;
-	int		sign;
+	int x;
+	int y;
+	int color;
 
-	slope = (double)(line.y[1] - line.y[0]) / (double)(line.x[1] - line.x[0]);
-	sign = (line.x[1] - line.x[0]) < 0 ? -1 : 1;
-
-	intercept = ft_round((double)line.y[1] - (slope * (double)line.x[1]));
-	if(slope <= 1 && slope >= -1)
+	lineshit.len = line.b.y - line.a.y;
+	lineshit.slope = (double)(line.b.x - line.a.x) / (double)(line.b.y - line.a.y);
+	lineshit.intercept = ft_round((double)line.b.x - (lineshit.slope * (double)line.b.y));
+	y = line.a.y;
+	lineshit.sign = (line.b.y - line.a.y) < 0 ? -1 : 1;
+	while(y != line.b.y)
 	{
-		x = line.x[0];
-		while(x != line.x[1])
-		{
-			y = (slope * x) + intercept;
-			mlx_pixel_put(line.mlx, line.window, x, y, 0xFFFFFF);
-			x += sign;
-		}
+		x = (lineshit.slope * y) + lineshit.intercept;
+		color = gradient(line.a.color, line.b.color, lineshit.len, y - line.a.y);
+		mlx_pixel_put(mr_struct.mlx, mr_struct.window, x, y, color);
+		y += lineshit.sign;
 	}
+}
+
+void	draw_line(t_line line, t_bigstruct mr_struct)
+{
+	t_lineshit lineshit;
+
+	lineshit.slope = (double)(line.b.y - line.a.y) / (double)(line.b.x - line.a.x);
+	lineshit.sign = (line.b.x - line.a.x) < 0 ? -1 : 1;
+
+	lineshit.intercept = ft_round((double)line.b.y - (lineshit.slope * (double)line.b.x));
+	if(lineshit.slope <= 1 && lineshit.slope >= -1)
+		draw_xline(line, lineshit, mr_struct);
 	else
-	{
-		slope = (double)(line.x[1] - line.x[0]) / (double)(line.y[1] - line.y[0]);
-		intercept = ft_round((double)line.x[1] - (slope * (double)line.y[1]));
-		y = line.y[0];
-		sign = (line.y[1] - line.y[0]) < 0 ? -1 : 1;
-		while(y != line.y[1])
-		{
-			x = (slope * y) + intercept;
-			mlx_pixel_put(line.mlx, line.window, x, y, 0xFFFFFF);
-			y += sign;
-		}
-	}
-	mlx_pixel_put(line.mlx, line.window, line.x[0], line.y[0], 0xFFFFFF);
+		draw_yline(line, lineshit, mr_struct);
+	mlx_pixel_put(mr_struct.mlx, mr_struct.window, line.a.x, line.a.y, line.b.color);
 }

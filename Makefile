@@ -17,7 +17,6 @@ SRCS	=	srcs/main.c			\
 			srcs/valid.c		\
 			srcs/frees.c		\
 			srcs/lines.c		\
-			srcs/draw.c			\
 			srcs/grids.c		\
 			srcs/testing.c		\
 			srcs/keys.c			\
