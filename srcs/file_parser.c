@@ -12,7 +12,7 @@
 
 #include "../includes/fdf.h"
 
-t_pt	*fill_point(char *str, t_pt *point)
+void	fill_point(char *str, t_pt *point)
 {
 	char	*color;
 
@@ -20,7 +20,6 @@ t_pt	*fill_point(char *str, t_pt *point)
 	if ((color = ft_strchr(str, ',')))
 		point->color = (ft_atoibase(color, 16));
 	else point->color = 0xFFFFFF; // TODO: write a function that assigns color based on z value
-	return (point);
 }
 
 void	process_filestring(char *filestring, t_map *map)
@@ -32,7 +31,6 @@ void	process_filestring(char *filestring, t_map *map)
 
 	y = 0;
 	i = 0;
-
 	printf("processing "P_YW"%s\n"P_X, filestring);
 	pt = filestring;
 	while (y < map->rows)
@@ -41,13 +39,18 @@ void	process_filestring(char *filestring, t_map *map)
 		while (x < map->columns)
 		{
 			fill_point(pt, &map->points[y][x]);
+			if (map->max_z < map->points[y][x].z)
+				map->max_z = map->points[y][x].z;
+			if (map->min_z > map->points[y][x].z)
+				map->min_z = map->points[y][x].z;
 			printf(P_GY"%d "P_X, map->points[y][x].z);
 			pt = scoot(pt, ' ');
 			x++;
-		}		
-		y++;
+		}
 		printf("\n");
+		y++;
 	}
+	printf(P_BL"z-range: %d - %d\n"P_X, map->min_z, map->max_z);
 	free(filestring);
 }
 
@@ -88,6 +91,8 @@ void	malloc_map(t_map *map)
 		x = 0;
 		y++;
 	}
+	map->max_z = 0;
+	map->min_z = 0;
 }
 
 /*

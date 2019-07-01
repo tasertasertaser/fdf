@@ -22,8 +22,8 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	y = 0;
 
 	line.a.x = grid[y][x].x;
-	line.b.x = grid[y][x + 1].x;
 	line.a.y = grid[y][x].y;
+	line.b.x = grid[y][x + 1].x;
 	line.b.y = grid[y][x + 1].y;
 	draw_line(line, mr_struct);
 

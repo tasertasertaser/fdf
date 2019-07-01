@@ -70,13 +70,29 @@ int key_press(int key, t_bigstruct *mr_struct)
 	}
 	if (key == A_KEY)
 	{
+		mr_struct->reset = 1;
 		mr_struct->origin.x -= 10;
 		mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == D_KEY)
 	{
+		mr_struct->reset = 1;
 		mr_struct->origin.x += 10;
+		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	}
+	if (key == W_KEY)
+	{
+		mr_struct->reset = 1;
+		mr_struct->origin.y -= 10;
+		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	}
+	if (key == S_KEY)
+	{
+		mr_struct->reset = 1;
+		mr_struct->origin.y += 10;
 		mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}

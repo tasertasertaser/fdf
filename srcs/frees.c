@@ -31,3 +31,16 @@ void	free_2D(char **array)
 		i++;
 	}
 }
+
+void	free_grid(t_coord **grid, t_bigstruct mr_struct)
+{
+	int y;
+
+	y = 0;
+	while (y < mr_struct.map->rows)
+	{
+		free(grid[y]);
+		y++;
+	}
+	free(grid);
+}

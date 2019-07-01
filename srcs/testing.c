@@ -26,9 +26,9 @@ void	draw_linestar(t_bigstruct mr_struct)
 	t_coord center = {cx, cy, WHT};
 	int TLcolor = PNK;
 	int	TRcolor = YLW;
-	//int BRcolor = GRN;
-	//int BLcolor = BLU;
-	int endcolor = WHT;
+	int BRcolor = GRN;
+	int BLcolor = BLU;
+	// int endcolor = WHT;
 
 	t_coord end[] = {{cx - 200, cy - 200, TLcolor},
 					{cx - 150, cy - 200, gradient(TLcolor, TRcolor, 9, 2)},
@@ -40,31 +40,31 @@ void	draw_linestar(t_bigstruct mr_struct)
 					{cx + 150, cy - 200, gradient(TLcolor, TRcolor, 9, 8)},
 
 					{cx + 200, cy - 200, TRcolor},
-					{cx + 200, cy - 150, endcolor},
-					{cx + 200, cy - 100, endcolor},
-					{cx + 200, cy - 50, endcolor},
-					{cx + 200, cy, endcolor},
-					{cx + 200, cy + 50, endcolor},
-					{cx + 200, cy + 100, endcolor},
-					{cx + 200, cy + 150, endcolor},
+					{cx + 200, cy - 150, gradient(TRcolor, BRcolor, 9, 2)},
+					{cx + 200, cy - 100, gradient(TRcolor, BRcolor, 9, 3)},
+					{cx + 200, cy - 50, gradient(TRcolor, BRcolor, 9, 4)},
+					{cx + 200, cy, gradient(TRcolor, BRcolor, 9, 5)},
+					{cx + 200, cy + 50, gradient(TRcolor, BRcolor, 9, 6)},
+					{cx + 200, cy + 100, gradient(TRcolor, BRcolor, 9, 7)},
+					{cx + 200, cy + 150, gradient(TRcolor, BRcolor, 9, 8)},
 
-					{cx + 200, cy + 200, endcolor},
-					{cx + 150, cy + 200, endcolor},
-					{cx + 100, cy + 200, endcolor},
-					{cx + 50, cy + 200, endcolor},
-					{cx, cy + 200, endcolor},
-					{cx - 50, cy + 200, endcolor},
-					{cx - 100, cy + 200, endcolor},
-					{cx - 150, cy + 200, endcolor},
+					{cx + 200, cy + 200, BRcolor},
+					{cx + 150, cy + 200, gradient(BRcolor, BLcolor, 9, 2)},
+					{cx + 100, cy + 200, gradient(BRcolor, BLcolor, 9, 3)},
+					{cx + 50, cy + 200, gradient(BRcolor, BLcolor, 9, 4)},
+					{cx, cy + 200, gradient(BRcolor, BLcolor, 9, 5)},
+					{cx - 50, cy + 200, gradient(BRcolor, BLcolor, 9, 6)},
+					{cx - 100, cy + 200, gradient (BRcolor, BLcolor, 9, 7)},
+					{cx - 150, cy + 200, gradient(BRcolor, BLcolor, 9, 8)},
 
-					{cx - 200, cy + 200, endcolor},
-					{cx - 200, cy + 150, endcolor},
-					{cx - 200, cy + 100, endcolor},
-					{cx - 200, cy + 50, endcolor},
-					{cx - 200, cy, endcolor},
-					{cx - 200, cy - 50, endcolor},
-					{cx - 200, cy - 100, endcolor},
-					{cx - 200, cy - 150, endcolor}};
+					{cx - 200, cy + 200, BLcolor},
+					{cx - 200, cy + 150, gradient(BLcolor, TLcolor, 9, 2)},
+					{cx - 200, cy + 100, gradient(BLcolor, TLcolor, 9, 3)},
+					{cx - 200, cy + 50, gradient(BLcolor, TLcolor, 9, 4)},
+					{cx - 200, cy, gradient(BLcolor, TLcolor, 9, 5)},
+					{cx - 200, cy - 50, gradient(BLcolor, TLcolor, 9, 6)},
+					{cx - 200, cy - 100, gradient(BLcolor, TLcolor, 9, 7)},
+					{cx - 200, cy - 150, gradient(BLcolor, TLcolor, 9, 8)}};
 
 
 	size_t counter = 0;

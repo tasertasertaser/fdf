@@ -31,13 +31,13 @@ int	gradient(int startcolor, int endcolor, int len, int pos)
 	return (newcolor);
 }
 
-int zcolor(int z, int highest, int lowest)
+int zcolor(int z, t_bigstruct mr_struct)
 {
 	int	color;
 	int len;
 
-	len = highest - lowest;
-	if(!COLORS_ON)
+	len = mr_struct.map->max_z - mr_struct.map->min_z;
+	if(!mr_struct.color_on)
 		color = 0xFFFFFF;
 	else
 		color = gradient(MINCOLOR, MAXCOLOR, len, z);
