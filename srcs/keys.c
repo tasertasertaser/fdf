@@ -108,6 +108,18 @@ int key_press(int key, t_bigstruct *mr_struct)
 		mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
+	if (key == Z_KEY)
+	{
+		mr_struct->unit++;
+		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	}
+	if (key == X_KEY)
+	{
+		mr_struct->unit--;
+		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	}
 	if (key == H_KEY)
 		help(mr_struct);
 	return (key);

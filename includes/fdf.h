@@ -75,6 +75,7 @@ typedef struct		s_bigstruct
 	char			proj;
 	int				reset;
 	t_coord			origin;
+	double			unit;
 	int				z_mod;
 	int				color_on;
 
@@ -126,9 +127,13 @@ typedef struct		s_bigstruct
 # define S_KEY 1
 # define D_KEY 2
 
-# define H_KEY 4
+# define Z_KEY 6
+# define X_KEY 7
+
 # define J_KEY 38
 # define K_KEY 40
+
+# define H_KEY 4
 # define ESC_KEY 53
 
 /*======== other ========*/
@@ -159,4 +164,7 @@ void	connect(t_coord **grid, t_bigstruct mr_struct);
 void	draw_linestar(t_bigstruct mr_struct);
 int		gradient(int startcolor, int endcolor, int len, int pos);
 void	free_grid(t_coord **grid, t_bigstruct mr_struct);
+double	get_unit(t_bigstruct mr_struct);
+t_coord	get_origin(t_bigstruct mr_struct, double unit);
+
 #endif

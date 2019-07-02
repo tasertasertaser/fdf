@@ -18,14 +18,39 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	int y;
 	t_line	line;
 
-	x = 0;
 	y = 0;
 
-	line.a.x = grid[y][x].x;
-	line.a.y = grid[y][x].y;
-	line.b.x = grid[y][x + 1].x;
-	line.b.y = grid[y][x + 1].y;
-	draw_line(line, mr_struct);
+	while(y < mr_struct.map->rows)
+	{
+		x = 0;
+		
+		while(x < mr_struct.map->columns)
+		{
+			if ((x + 1) < mr_struct.map->columns)
+			{
+				line.a.x = grid[y][x].x;
+				line.a.y = grid[y][x].y;
+				line.a.color = mr_struct.map->points[y][x].color;
+				line.b.x = grid[y][x + 1].x;
+				line.b.y = grid[y][x + 1].y;
+				line.b.color = mr_struct.map->points[y][x + 1].color;
+				draw_line(line, mr_struct);
+			}
+				
+			if ((y + 1) < mr_struct.map->rows)
+			{
+				line.a.x = grid[y][x].x;
+				line.a.y = grid[y][x].y;
+				line.a.color = mr_struct.map->points[y][x].color;
+				line.b.x = grid[y + 1][x].x;
+				line.b.y = grid[y + 1][x].y;
+				line.b.color = mr_struct.map->points[y + 1][x].color;
+				draw_line(line, mr_struct);
+			}
+			x++;
+		}
+		y++;
+	}
 
 	// y = 0;
 	// while(y < mr_struct.map->rows)

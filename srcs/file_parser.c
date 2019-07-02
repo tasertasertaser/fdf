@@ -17,7 +17,7 @@ void	fill_point(char *str, t_pt *point)
 	char	*color;
 
 	point->z = ft_atoi(str);
-	if ((color = ft_strchr(str, ',')))
+	if ((color = ft_strchr(str, 'x')))
 		point->color = (ft_atoibase(color, 16));
 	else point->color = 0xFFFFFF; // TODO: write a function that assigns color based on z value
 }
@@ -43,7 +43,7 @@ void	process_filestring(char *filestring, t_map *map)
 				map->max_z = map->points[y][x].z;
 			if (map->min_z > map->points[y][x].z)
 				map->min_z = map->points[y][x].z;
-			printf(P_GY"%d "P_X, map->points[y][x].z);
+			printf(P_GY"%x "P_X, map->points[y][x].color);
 			pt = scoot(pt, ' ');
 			x++;
 		}
