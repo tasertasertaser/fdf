@@ -76,9 +76,8 @@ typedef struct		s_bigstruct
 	int				reset;
 	t_coord			origin;
 	double			unit;
-	int				z_mod;
-	int				color_on;
-
+	float			z_mod;
+	int				clr;
 }					t_bigstruct;
 
 /*======== MLX things ========*/
@@ -113,9 +112,6 @@ typedef struct		s_bigstruct
 # define GRY 0x404040
 # define WHT 0xFFFFFF
 
-# define MAXCOLOR PNK
-# define MINCOLOR YLW
-
 /*======== special keys ========*/
 
 # define I_KEY 34
@@ -133,6 +129,8 @@ typedef struct		s_bigstruct
 # define J_KEY 38
 # define K_KEY 40
 
+# define C_KEY 8
+
 # define H_KEY 4
 # define ESC_KEY 53
 
@@ -145,23 +143,19 @@ typedef struct		s_bigstruct
 
 /*======== fn declarations ========*/
 
-//int		int linelen(t_line *line);
 void	draw_line(t_line line, t_bigstruct mr_struct);
-//void	draw_gradient_line(t_pt start, t_pt end, void *mlx, void *window);
-//int		gradient(int startcolor, int endcolor, int len, int pix);
 t_map	*parse(char *filename);
 void	valid_check(char *row, int columns);
 void	error(char *description);
 void	ft_strcjoinfree(char **old, char *new, char c);
 void	free_2D(char **array);
-void	print_flat_map(t_bigstruct wnd, t_map *map);
-void	print_iso_map(t_bigstruct wnd, t_map *map);
 void	create_grid(t_bigstruct wnd, t_map *map, char projection);
-void	draw_centerline(t_bigstruct mr_struct, char axis);
 int		key_press(int key, t_bigstruct *mr_struct);
-void	give_usage(void);
 void	connect(t_coord **grid, t_bigstruct mr_struct);
+void	give_usage(void);
 void	draw_linestar(t_bigstruct mr_struct);
+void	draw_centerline(t_bigstruct mr_struct, char axis);
+int		zcolor(t_bigstruct mr_struct, int x, int y);
 int		gradient(int startcolor, int endcolor, int len, int pos);
 void	free_grid(t_coord **grid, t_bigstruct mr_struct);
 double	get_unit(t_bigstruct mr_struct);

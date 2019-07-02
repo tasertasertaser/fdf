@@ -28,13 +28,21 @@ LIBS	=	-L libft -lft -L mlx -L mlx -lmlx
 
 GREY = \033[38;5;6m
 BLUE = \033[38;5;37m
-WHITE = \033[0m 
+PURPLE = \033[38;5;99m
+YELLOW = \033[38;5;214m
+WHITE = \033[0m
 
 OBJS = $(SRCS:%.c=%.o)
+
+.PHONY: all clean fclean re
 
 all : $(NAME)
 
 $(NAME) : 
+	@echo "$(YELLOW)Libft:"
+	@make -C ./libft/
+	@echo "$(PURPLE)MLX:"
+	@make -C ./mlx/
 	@gcc  -o $(NAME) $(WFLAGS) $(MLXFLAGS) $(LIBS) $(SRCS)
 	@echo "$(GREY)<< executable built >>$(WHITE)"
 
@@ -46,17 +54,18 @@ fclean : clean
 	@rm -f $(NAME)
 	@echo "$(GREY)<< executable removed >>$(WHITE)"	
 
-testclean : fclean
-	@rm -f test main.c
-	@echo "$(GREY)<< test files removed >>$(WHITE)"
-
 re : fclean all
 
-test : re
-	# needs to be updated
-	@gcc -L. libft.a -o test main.c
-	@echo "$(GREY)<< testfile compiled >>$(WHITE)"
-
 debug : 
+	@gcc -g $(MLXFLAGS) $(SRCS) $(LIBS) -o DEBUGfdf
+	@echo "$(PURPLE)<< debug symbols compiled >>$(WHITE)"
+
+fdebug : 
 	@gcc -fsanitize=address -g $(MLXFLAGS) $(SRCS) $(LIBS) -o DEBUGfdf
-	@echo "$(BLUE)<< debug symbols compiled >>$(WHITE)"
+	@echo "$(PURPLE)<< debug symbols compiled >>$(WHITE)"
+	@echo "$(PURPLE)<< fsanitize enabled >>$(WHITE)"
+
+debugclean :
+	@rm -rf DEBUGfdf.dSYM
+	@rm DEBUGfdf
+	@echo "$(PURPLE)<< debug files removed>>$(WHITE)"

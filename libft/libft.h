@@ -23,6 +23,7 @@
 # define MIN(a,b) ((a) > (b) ? (b) : (a))
 # define MAX(a,b) ((a) > (b) ? (a) : (b))
 # define ABSOLUTE(a) (((a) < 0) ? -1 * (a) : (a))
+# define AVG(a,b) (((a) - (b)) / 2) + (b)
 
 typedef struct s_list	t_list;
 struct	s_list

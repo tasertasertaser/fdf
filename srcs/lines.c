@@ -19,32 +19,29 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	t_line	line;
 
 	y = 0;
-
-	while(y < mr_struct.map->rows)
+	while (y < mr_struct.map->rows)
 	{
 		x = 0;
-		
 		while(x < mr_struct.map->columns)
 		{
 			if ((x + 1) < mr_struct.map->columns)
 			{
 				line.a.x = grid[y][x].x;
 				line.a.y = grid[y][x].y;
-				line.a.color = mr_struct.map->points[y][x].color;
+				line.a.color = (mr_struct.clr) ? zcolor(mr_struct, x, y) : mr_struct.map->points[y][x].color;
 				line.b.x = grid[y][x + 1].x;
 				line.b.y = grid[y][x + 1].y;
-				line.b.color = mr_struct.map->points[y][x + 1].color;
+				line.b.color = (mr_struct.clr) ? zcolor(mr_struct, (x + 1), y) : mr_struct.map->points[y][x + 1].color;
 				draw_line(line, mr_struct);
 			}
-				
 			if ((y + 1) < mr_struct.map->rows)
 			{
 				line.a.x = grid[y][x].x;
 				line.a.y = grid[y][x].y;
-				line.a.color = mr_struct.map->points[y][x].color;
+				line.a.color = (mr_struct.clr) ? zcolor(mr_struct, x, y) : mr_struct.map->points[y][x].color;
 				line.b.x = grid[y + 1][x].x;
 				line.b.y = grid[y + 1][x].y;
-				line.b.color = mr_struct.map->points[y + 1][x].color;
+				line.b.color = (mr_struct.clr) ? zcolor(mr_struct, x, (y + 1)) : mr_struct.map->points[y + 1][x].color;
 				draw_line(line, mr_struct);
 			}
 			x++;

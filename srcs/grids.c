@@ -141,7 +141,7 @@ void	create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 		error("something's wrong in create_grid - invalid grid type\n");
 
 	// printf(P_GR"origin: %d, %d\n"P_X, mr_struct.origin.x, mr_struct.origin.y);
-	// connect(grid, mr_struct);
+	connect(grid, mr_struct);
 	free_grid(grid, mr_struct);
 }
 
