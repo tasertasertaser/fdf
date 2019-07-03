@@ -73,18 +73,20 @@ typedef struct		s_im
 
 typedef struct		s_bigstruct
 {
+	char			*file;
 	int				center_x;
 	int				center_y;
 	void			*window;
 	void			*mlx;
 	t_im			*img;
 	t_map			*map;
+	t_coord			**grid;
 	char			proj;
-	int				reset;
 	t_coord			origin;
 	double			unit;
 	float			z_mod;
 	int				clr;
+	int				helptoggle;
 }					t_bigstruct;
 
 /*======== MLX things ========*/
@@ -139,6 +141,7 @@ typedef struct		s_bigstruct
 # define C_KEY 8
 
 # define H_KEY 4
+# define SPACE_KEY 49
 # define ESC_KEY 53
 
 /*======== other ========*/
@@ -146,12 +149,13 @@ typedef struct		s_bigstruct
 # define PRSP_BACKEDGE .3
 # define PRSP_FRONTEDGE .9
 # define FT_INTMAX 2147483647
-# define UNIT 30
+# define ZOOM_MAX 200
 
 /*======== testing ========*/
 
 # define TEST0 0
 # define TEST1 'b'
+# define TESTKEY 269
 
 /*======== fn declarations ========*/
 
@@ -161,7 +165,7 @@ void	valid_check(char *row, int columns);
 void	error(char *description);
 void	ft_strcjoinfree(char **old, char *new, char c);
 void	free_2D(char **array);
-void	create_grid(t_bigstruct wnd, t_map *map, char projection);
+void	create_grid(t_bigstruct mr_struct, t_map *map, char projection);
 int		key_press(int key, t_bigstruct *mr_struct);
 void	connect(t_coord **grid, t_bigstruct mr_struct);
 void	give_usage(void);
@@ -169,6 +173,7 @@ void	draw_linestar(t_bigstruct mr_struct);
 void	draw_centerline(t_bigstruct mr_struct, char axis);
 int		zcolor(t_bigstruct mr_struct, int x, int y);
 int		gradient(int startcolor, int endcolor, int len, int pos);
+t_coord **malloc_grid(t_map *map);
 void	free_grid(t_coord **grid, t_bigstruct mr_struct);
 double	get_unit(t_bigstruct mr_struct);
 t_coord	get_origin(t_bigstruct mr_struct, double unit);

@@ -122,25 +122,24 @@ t_coord **malloc_grid(t_map *map)
 
 void	create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 {
-	t_coord	**grid;
 	int		i;
 
 	i = 0;
 	clear_image(mr_struct.img);
-	grid = malloc_grid(map);
+	// grid = malloc_grid(map);
 	
 	if (projection == 'o')
-		make_orth(mr_struct, grid, map);
+		make_orth(mr_struct, mr_struct.grid, map);
 	else if (projection == 'i')
-		make_iso(mr_struct, grid, map);
+		make_iso(mr_struct, mr_struct.grid, map);
 	else if (projection == 'p')
-		make_prsp(mr_struct, grid, map);
+		make_prsp(mr_struct, mr_struct.grid, map);
 	else
 		error("something's wrong in create_grid - invalid grid type\n");
 
 	// printf(P_GR"origin: %d, %d\n"P_X, mr_struct.origin.x, mr_struct.origin.y);
-	connect(grid, mr_struct);
+	connect(mr_struct.grid, mr_struct);
 	mlx_put_image_to_window(mr_struct.mlx, mr_struct.window, mr_struct.img->imptr, 0, 0);
-	free_grid(grid, mr_struct);
+	// free_grid(grid, mr_struct);
 }
 
