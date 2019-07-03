@@ -51,7 +51,7 @@ void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 			grid[y][x].x = (mr_struct.origin.x + (x * x_unit)) - x_shift;
 			grid[y][x].y = ((y * y_unit) + mr_struct.origin.y) - (map->points[y][x].z * mr_struct.z_mod);
 			grid[y][x].color = map->points[y][x].color;
-			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
+			//mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
 			x++;
 		}
 		y++;
@@ -73,7 +73,7 @@ void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 			grid[y][x].x = (((x - y) * cos(0.523599)) * mr_struct.unit) + mr_struct.origin.x;
 			grid[y][x].y = (((x + y) * sin(0.523599)) * mr_struct.unit) + mr_struct.origin.y - (map->points[y][x].z) * mr_struct.z_mod;
 			grid[y][x].color = map->points[y][x].color;
-			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
+			//mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
 			x++;
 		}
 		y++;
@@ -94,7 +94,7 @@ void	make_orth(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 			grid[y][x].x = (x * mr_struct.unit) + mr_struct.origin.x;
 			grid[y][x].y = (y * mr_struct.unit) + mr_struct.origin.y;
 			grid[y][x].color = map->points[y][x].color;
-			mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
+			//mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
 			x++;
 		}
 		y++;
@@ -126,11 +126,9 @@ void	create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 	int		i;
 
 	i = 0;
-
+	clear_image(mr_struct.img);
 	grid = malloc_grid(map);
 	
-	draw_centerline(mr_struct, 'b');
-
 	if (projection == 'o')
 		make_orth(mr_struct, grid, map);
 	else if (projection == 'i')
@@ -142,6 +140,7 @@ void	create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 
 	// printf(P_GR"origin: %d, %d\n"P_X, mr_struct.origin.x, mr_struct.origin.y);
 	connect(grid, mr_struct);
+	mlx_put_image_to_window(mr_struct.mlx, mr_struct.window, mr_struct.img->imptr, 0, 0);
 	free_grid(grid, mr_struct);
 }
 

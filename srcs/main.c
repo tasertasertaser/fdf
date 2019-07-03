@@ -4,26 +4,29 @@ int	main(int ac, char **av)
 {
 	if(ac == 2)
 	{
-		// parse(av[1]);
 		t_map	*map = parse(av[1]);
-		// t_image	*img;
 		void *mlx_ptr = mlx_init();
 		void *windowptr = mlx_new_window(mlx_ptr, WINDOW_W, WINDOW_H + 100, "fdf");
-		
-		t_bigstruct mr_struct = {WINDOW_W / 2, WINDOW_H / 2, windowptr, mlx_ptr, map, 'p', 0, (t_coord){0, 0, WHT}, 1, 3, 0};
+		t_im	*image = img_factory(mlx_ptr);
+		t_bigstruct mr_struct = {WINDOW_W / 2, WINDOW_H / 2, windowptr, mlx_ptr, image, map, 'p', 0, (t_coord){0, 0, WHT}, 1, 3, 0};
 		mr_struct.unit = get_unit(mr_struct);
 		mr_struct.origin = get_origin(mr_struct, mr_struct.unit);
 		
-		//void *image = mlx_new_image (mlx_ptr, WINDOW_W, WINDOW_H);
-		mlx_string_put(mr_struct.mlx, mr_struct.window, mr_struct.center_x - 95, WINDOW_H - 30, GRY, "Press \"H\" for help");
-		//draw_linestar(mr_struct);
-		//img = make_image(mr_struct);
+		if (TEST0)
+			draw_linestar(mr_struct);
+		if (TEST1)
+			draw_centerline(mr_struct, TEST1);
+		
+		// t_image	*img = NULL;
+		// img = make_image(mr_struct);
+		
+		// mlx_put_image_to_window(mr_struct.mlx, mr_struct.window, img, 0, 0);
+		
+		mlx_string_put(mr_struct.mlx, mr_struct.window, 40, WINDOW_H + 40, GRY, av[1]);
+		mlx_string_put(mr_struct.mlx, mr_struct.window, WINDOW_W - 230, WINDOW_H + 40, GRY, "Press \"H\" for help");
+		//create_grid(mr_struct, map, mr_struct.proj);
 
-		create_grid(mr_struct, map, mr_struct.proj);
-
-		//img_test(img, mr_struct);
 		mlx_hook(windowptr, 2, (1L<<0), key_press, &mr_struct);
-
 		mlx_loop(mlx_ptr);
 	}
 	else

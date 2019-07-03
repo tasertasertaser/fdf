@@ -58,79 +58,80 @@ int key_press(int key, t_bigstruct *mr_struct)
 {
 	if (key == ESC_KEY)
 	{
-		mlx_destroy_window (mr_struct->mlx, mr_struct->window);
+		mlx_destroy_image(mr_struct->mlx, mr_struct->img);
+		mlx_destroy_window(mr_struct->mlx, mr_struct->window);
 		exit(0);
 	}
 	if (key == I_KEY)
 	{
 		mr_struct->proj = 'i';
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		//mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == O_KEY)
 	{
 		mr_struct->proj = 'o';
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == P_KEY)
 	{
 		mr_struct->proj = 'p';
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == A_KEY)
 	{
 		mr_struct->reset = 1;
 		mr_struct->origin.x -= 10;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == D_KEY)
 	{
 		mr_struct->reset = 1;
 		mr_struct->origin.x += 10;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == W_KEY)
 	{
 		mr_struct->reset = 1;
 		mr_struct->origin.y -= 10;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == S_KEY)
 	{
 		mr_struct->reset = 1;
 		mr_struct->origin.y += 10;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == J_KEY)
 	{
 		mr_struct->z_mod--;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == K_KEY)
 	{
 		mr_struct->z_mod++;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == Z_KEY)
 	{
 		mr_struct->unit++;
 		mr_struct->z_mod *= 1.05;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == X_KEY)
 	{
 		mr_struct->unit--;
 		mr_struct->z_mod *= 0.95;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == C_KEY)
@@ -143,7 +144,7 @@ int key_press(int key, t_bigstruct *mr_struct)
 			mr_struct->clr = 3;
 		else 
 			mr_struct->clr = 0;
-		mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == H_KEY)

@@ -65,16 +65,11 @@ typedef struct		s_map
 	t_pt			**points;
 }					t_map;
 
-typedef struct		s_image
+typedef struct		s_im
 {
-	void		*ptr;
-	int			*data;
-	int			bpp;
-	int			size_line;
-	int			endian;
-	int			width;
-	int			height;
-}					t_image;
+	void		*imptr;
+	int			*pixels;
+}					t_im;
 
 typedef struct		s_bigstruct
 {
@@ -82,6 +77,7 @@ typedef struct		s_bigstruct
 	int				center_y;
 	void			*window;
 	void			*mlx;
+	t_im			*img;
 	t_map			*map;
 	char			proj;
 	int				reset;
@@ -152,6 +148,11 @@ typedef struct		s_bigstruct
 # define FT_INTMAX 2147483647
 # define UNIT 30
 
+/*======== testing ========*/
+
+# define TEST0 0
+# define TEST1 'b'
+
 /*======== fn declarations ========*/
 
 void	draw_line(t_line line, t_bigstruct mr_struct);
@@ -171,8 +172,10 @@ int		gradient(int startcolor, int endcolor, int len, int pos);
 void	free_grid(t_coord **grid, t_bigstruct mr_struct);
 double	get_unit(t_bigstruct mr_struct);
 t_coord	get_origin(t_bigstruct mr_struct, double unit);
-void	img_pixel_put(t_image *img, int x, int y, int color);
-t_image	*make_image(t_bigstruct mr_struct);
-void img_test(t_image *img, t_bigstruct mr_struct);
+// void	img_pixel_put(t_image *img, int x, int y, int color);
+// t_image	*make_image(t_bigstruct mr_struct);
+t_im	*img_factory(void *mlx);
+void	drawpixel(t_im *img, int x, int y, int color);
+void	clear_image(t_im *image);
 
 #endif

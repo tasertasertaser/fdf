@@ -89,7 +89,8 @@ void	draw_xline(t_line line, t_lineshit lineshit, t_bigstruct mr_struct)
 	{
 		y = (lineshit.slope * x) + lineshit.intercept;
 		color = gradient(line.a.color, line.b.color, lineshit.len, x - line.a.x);
-		mlx_pixel_put(mr_struct.mlx, mr_struct.window, x, y, color);
+		drawpixel(mr_struct.img, x, y, color); //mr_struct.pixels[pix(x, y)] = color;
+		//mlx_pixel_put(mr_struct.mlx, mr_struct.window, x, y, color);
 		x += lineshit.sign;
 	}
 }
@@ -109,7 +110,8 @@ void	draw_yline(t_line line, t_lineshit lineshit, t_bigstruct mr_struct)
 	{
 		x = (lineshit.slope * y) + lineshit.intercept;
 		color = gradient(line.a.color, line.b.color, lineshit.len, y - line.a.y);
-		mlx_pixel_put(mr_struct.mlx, mr_struct.window, x, y, color);
+		drawpixel(mr_struct.img, x, y, color); //mr_struct.pixels[pix(x, y)] = color;
+		//mlx_pixel_put(mr_struct.mlx, mr_struct.window, x, y, color);
 		y += lineshit.sign;
 	}
 }
@@ -126,5 +128,7 @@ void	draw_line(t_line line, t_bigstruct mr_struct)
 		draw_xline(line, lineshit, mr_struct);
 	else
 		draw_yline(line, lineshit, mr_struct);
-	mlx_pixel_put(mr_struct.mlx, mr_struct.window, line.a.x, line.a.y, line.b.color);
+	
+	drawpixel(mr_struct.img, line.b.x, line.b.y, line.b.color); //mr_struct.pixels[pix(line.b.x, line.b.y)] = line.b.color;
+	//mlx_pixel_put(mr_struct.mlx, mr_struct.window, line.a.x, line.a.y, line.b.color);
 }
