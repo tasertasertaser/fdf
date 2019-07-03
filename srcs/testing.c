@@ -74,3 +74,9 @@ void	draw_linestar(t_bigstruct mr_struct)
 		counter++;
 	}
 }
+
+void img_test(t_image *img, t_bigstruct mr_struct)
+{
+	img_pixel_put(img, 200, 200, 0x99FFFFFF);
+	mlx_put_image_to_window(mr_struct.mlx, mr_struct.window, img, 0, 0);
+}

@@ -65,6 +65,17 @@ typedef struct		s_map
 	t_pt			**points;
 }					t_map;
 
+typedef struct		s_image
+{
+	void		*ptr;
+	int			*data;
+	int			bpp;
+	int			size_line;
+	int			endian;
+	int			width;
+	int			height;
+}					t_image;
+
 typedef struct		s_bigstruct
 {
 	int				center_x;
@@ -160,5 +171,8 @@ int		gradient(int startcolor, int endcolor, int len, int pos);
 void	free_grid(t_coord **grid, t_bigstruct mr_struct);
 double	get_unit(t_bigstruct mr_struct);
 t_coord	get_origin(t_bigstruct mr_struct, double unit);
+void	img_pixel_put(t_image *img, int x, int y, int color);
+t_image	*make_image(t_bigstruct mr_struct);
+void img_test(t_image *img, t_bigstruct mr_struct);
 
 #endif
