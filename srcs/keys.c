@@ -62,6 +62,16 @@ void	reset(t_bigstruct *mr_struct)
 	create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 }
 
+void color_select(int key, t_bigstruct *mr_struct)
+{
+	const int topcolors[] = {PNK, ORN, YLW, GRN, BLU, AQU, 0, WHT, PRP, 0, GRY};
+	const int btmcolors[] = {BLK, PNK, ORN, YLW, GRN, AQU, BLU, PRP, 0, GRY, WHT};
+	if (key >= 18 && key <= 29 && key != 24)
+		mr_struct->color2 = topcolors[key - 18];
+	else if (key >= 82 && key <= 92 && key != 90)
+		mr_struct->color1 = btmcolors[key - 82];
+}
+
 int key_press(int key, t_bigstruct *mr_struct)
 {
 	if (key == ESC_KEY)
@@ -73,79 +83,46 @@ int key_press(int key, t_bigstruct *mr_struct)
 	}
 	if (key == SPACE_KEY)
 		reset(mr_struct);
-	if (key == I_KEY)
+	if (key == I_KEY || key == O_KEY || key == P_KEY)
 	{
-		mr_struct->proj = 'i';
-		//mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		mr_struct->proj = key;
+		mr_struct->origin = get_origin(*mr_struct, mr_struct->unit);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
-	if (key == O_KEY)
+	if (key == W_KEY || key == A_KEY || key == S_KEY || key == D_KEY)
 	{
-		mr_struct->proj = 'o';
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		if (key == W_KEY)
+			mr_struct->origin.y -= 10;
+		if (key == A_KEY)
+			mr_struct->origin.x -= 10;
+		if (key == S_KEY)
+			mr_struct->origin.y += 10;
+		if (key == D_KEY)
+			mr_struct->origin.x += 10;
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
-	if (key == P_KEY)
+	if (key == J_KEY || key == K_KEY)
 	{
-		mr_struct->proj = 'p';
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
+		if (key == J_KEY)
+			mr_struct->z_mod--;
+		if (key == K_KEY)
+			mr_struct->z_mod++;
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
-	if (key == A_KEY)
+
+	if (key == Z_KEY || key == X_KEY)
 	{
-		mr_struct->origin.x -= 10;
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
-	}
-	if (key == D_KEY)
-	{
-		mr_struct->origin.x += 10;
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
-	}
-	if (key == W_KEY)
-	{
-		mr_struct->origin.y -= 10;
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
-	}
-	if (key == S_KEY)
-	{
-		mr_struct->origin.y += 10;
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
-	}
-	if (key == J_KEY)
-	{
-		mr_struct->z_mod--;
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
-	}
-	if (key == K_KEY)
-	{
-		mr_struct->z_mod++;
-		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
-	}
-	if (key == Z_KEY)
-	{
-		if (mr_struct->unit < ZOOM_MAX)
+		if (key == Z_KEY && mr_struct->unit < ZOOM_MAX)
 		{
 			mr_struct->unit++;
 			mr_struct->z_mod *= 1.05;
-			// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-			create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 		}
-	}
-	if (key == X_KEY)
-	{
-		if (mr_struct->unit > 2)
+		if (key == X_KEY && mr_struct->unit > ZOOM_MIN)
 		{
 			mr_struct->unit--;
 			mr_struct->z_mod *= 0.95;
-			// mlx_clear_window (mr_struct->mlx, mr_struct->window);
-			create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 		}
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	if (key == C_KEY)
 	{
@@ -154,9 +131,21 @@ int key_press(int key, t_bigstruct *mr_struct)
 		else if (mr_struct->clr == 1)
 			mr_struct->clr = 2;
 		else if (mr_struct->clr == 2)
+		{
 			mr_struct->clr = 3;
-		else 
+		}
+		else if (mr_struct->clr == 3)
+		{
+			mr_struct->clr = 4;
+			coloroptions(mr_struct);
+		}
+		else
+		{
+			mlx_clear_window (mr_struct->mlx, mr_struct->window);
+			mlx_string_put(mr_struct->mlx, mr_struct->window, 40, WINDOW_H + 40, GRY, mr_struct->file);
+			mlx_string_put(mr_struct->mlx, mr_struct->window, WINDOW_W - 230, WINDOW_H + 40, GRY, "Press \"H\" for help");
 			mr_struct->clr = 0;
+		}
 		// mlx_clear_window (mr_struct->mlx, mr_struct->window);
 		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
@@ -178,9 +167,14 @@ int key_press(int key, t_bigstruct *mr_struct)
 		mlx_string_put(mr_struct->mlx, mr_struct->window, 40, WINDOW_H + 40, GRY, mr_struct->file);
 		
 	}
-	if (key == TESTKEY)
-	{
-		mlx_string_put(mr_struct->mlx, mr_struct->window, WINDOW_W - 530, WINDOW_H + 40, PRP, ft_itoa(mr_struct->z_mod));
+	// if (key == 24 || key == 81)
+	// {
+	// 	secretbonus(mr_struct);
+	// }
+	if ((key >= 82 && key <= 92 && key != 90) || (key >= 18 && key <= 29 && key != 24))
+	{	
+		color_select(key, mr_struct);
+		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
 	}
 	return (key);
 }

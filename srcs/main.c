@@ -11,7 +11,7 @@ int	main(int ac, char **av)
 		void *mlx_ptr = mlx_init();
 		void *windowptr = mlx_new_window(mlx_ptr, WINDOW_W, WINDOW_H + 100, "fdf");
 		t_im	*image = img_factory(mlx_ptr);
-		t_bigstruct mr_struct = {av[1], WINDOW_W / 2, WINDOW_H / 2, windowptr, mlx_ptr, image, map, grid, 'i', (t_coord){0, 0, WHT}, 1, 3, 0, 0};
+		t_bigstruct mr_struct = {av[1], WINDOW_W / 2, WINDOW_H / 2, windowptr, mlx_ptr, image, map, grid, I_KEY, (t_coord){0, 0, BLK}, 1, 3, 0, 0, WHT, GRY, 0};
 		mr_struct.unit = get_unit(mr_struct);
 		mr_struct.origin = get_origin(mr_struct, mr_struct.unit);
 		

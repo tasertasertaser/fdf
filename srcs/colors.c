@@ -54,41 +54,8 @@ int zcolor(t_bigstruct mr_struct, int x, int y)
 			color = gradient(GRY, ORN, len, mr_struct.map->points[y][x].z);
 	}
 	if (mr_struct.clr == 3)
-	{
-		if (mr_struct.map->points[y][x].z >= mid_z)
-			color = gradient(GRY, AQU, len, mr_struct.map->points[y][x].z);
-		else
-			color = gradient(0x000000, GRY, len, mr_struct.map->points[y][x].z);
-	}
+		color = gradient(BLK, AQU, len, mr_struct.map->points[y][x].z);
+	if (mr_struct.clr == 4)
+		color = gradient(mr_struct.color1, mr_struct.color2, len, mr_struct.map->points[y][x].z);
 	return (color);
 }
-
-// int zcolor(t_bigstruct mr_struct, int x, int y)
-// {
-// 	int	color;
-// 	int len;
-// 	float mid_z;
-
-// 	mid_z = AVG((float)mr_struct.map->max_z, (float)mr_struct.map->min_z);
-// 	len = mr_struct.map->max_z - mr_struct.map->min_z;
-// 	if (mr_struct.map->points[y][x].z >= mid_z)
-// 		color = gradient(MIDCOLOR, MAXCOLOR, len, mr_struct.map->points[y][x].z);
-// 	else
-// 		color = gradient(MINCOLOR, MIDCOLOR, len, mr_struct.map->points[y][x].z);
-// 	return (color);
-// }
-
-// int zcolor(t_bigstruct mr_struct, int x, int y)
-// {
-// 	int	color;
-// 	int len;
-// 	float mid_z;
-
-// 	mid_z = AVG((float)mr_struct.map->max_z, (float)mr_struct.map->min_z);
-// 	len = mr_struct.map->max_z - mr_struct.map->min_z;
-// 	if (mr_struct.map->points[y][x].z >= mid_z)
-// 		color = gradient(MIDCOLOR, MAXCOLOR, len, mr_struct.map->points[y][x].z);
-// 	else
-// 		color = gradient(MINCOLOR, MIDCOLOR, len, mr_struct.map->points[y][x].z);
-// 	return (color);
-// }

@@ -22,6 +22,7 @@
 #include "../libft/libft.h"
 #include <math.h>
 #include <stdio.h>			// TODO: delete later
+#include <time.h>	// for secret mode
 
 /*======== testing ========*/
 
@@ -67,8 +68,8 @@ typedef struct		s_map
 
 typedef struct		s_im
 {
-	void		*imptr;
-	int			*pixels;
+	void			*imptr;
+	int				*pixels;
 }					t_im;
 
 typedef struct		s_bigstruct
@@ -86,13 +87,16 @@ typedef struct		s_bigstruct
 	double			unit;
 	float			z_mod;
 	int				clr;
+	int				setcolor;
+	int				color1;
+	int				color2;
 	int				helptoggle;
 }					t_bigstruct;
 
 /*======== MLX things ========*/
 
-# define WINDOW_W 1280
-# define WINDOW_H 720
+# define WINDOW_W 2500
+# define WINDOW_H 1200
 
 /*======== colorstuff ========*/
 
@@ -100,8 +104,6 @@ typedef struct		s_bigstruct
 # define G(a) ((a) >> 8) & 0xFF
 # define B(a) (a) & 0xFF
 # define RGB(a, b, c) ((a) << 16) + ((b) << 8) + (c)
-
-# define P(a) \e[38;R(a);G(a);B(a)m
 
 # define P_RD "\e[38;5;203m"
 # define P_YW "\e[38;5;220m"
@@ -119,6 +121,7 @@ typedef struct		s_bigstruct
 # define BLU 0x53ADFC
 # define PRP 0x9F29FF
 # define GRY 0x404040
+# define BLK 0x000000
 # define WHT 0xFFFFFF
 
 /*======== special keys ========*/
@@ -143,6 +146,8 @@ typedef struct		s_bigstruct
 # define H_KEY 4
 # define SPACE_KEY 49
 # define ESC_KEY 53
+# define L_SHIFT 257
+# define R_SHIFT 258
 
 /*======== other ========*/
 
@@ -150,6 +155,7 @@ typedef struct		s_bigstruct
 # define PRSP_FRONTEDGE .9
 # define FT_INTMAX 2147483647
 # define ZOOM_MAX 200
+# define ZOOM_MIN 2
 
 /*======== testing ========*/
 
@@ -182,5 +188,7 @@ t_coord	get_origin(t_bigstruct mr_struct, double unit);
 t_im	*img_factory(void *mlx);
 void	drawpixel(t_im *img, int x, int y, int color);
 void	clear_image(t_im *image);
+void	coloroptions(t_bigstruct *mr_struct);
+double	get_xunit(t_bigstruct mr_struct, int y);
 
 #endif

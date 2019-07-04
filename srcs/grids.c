@@ -9,9 +9,22 @@ double	get_unit(t_bigstruct mr_struct)
 
 t_coord	get_origin(t_bigstruct mr_struct, double unit)
 {
-	int x = ft_round(mr_struct.center_x - unit * (mr_struct.map->columns / 2));
-	int y = ft_round(mr_struct.center_y - unit * (mr_struct.map->rows / 2));
-	return ((t_coord){x, y, WHT});
+	int y;
+	int x;
+	if (mr_struct.proj == O_KEY)
+	{
+		x = ft_round(mr_struct.center_x - unit * (mr_struct.map->columns / 2));
+	}
+	else if (mr_struct.proj == I_KEY)
+	{
+		x = mr_struct.center_x - ((mr_struct.map->rows * (mr_struct.unit * .35)));
+	}
+	else
+	{
+		x = mr_struct.center_x - (get_xunit(mr_struct, 0) * (mr_struct.map->columns / 2));
+	}
+	y = ft_round(mr_struct.center_y - unit * (mr_struct.map->rows / 2));
+	return ((t_coord){x, y, 0});
 }
 
 double get_xunit(t_bigstruct mr_struct, int y)
@@ -24,7 +37,6 @@ double get_xunit(t_bigstruct mr_struct, int y)
 	xunit *= mr_struct.unit;
 	return (xunit * 2);
 }
-// http://faculty.cs.tamu.edu/jchai/cpsc641_spring10/PerspectiveProjection.pdf
 void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 {
 	int x;
@@ -73,7 +85,6 @@ void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 			grid[y][x].x = (((x - y) * cos(0.523599)) * mr_struct.unit) + mr_struct.origin.x;
 			grid[y][x].y = (((x + y) * sin(0.523599)) * mr_struct.unit) + mr_struct.origin.y - (map->points[y][x].z) * mr_struct.z_mod;
 			grid[y][x].color = map->points[y][x].color;
-			//mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
 			x++;
 		}
 		y++;
@@ -94,7 +105,6 @@ void	make_orth(t_bigstruct mr_struct, t_coord **grid, t_map *map)
 			grid[y][x].x = (x * mr_struct.unit) + mr_struct.origin.x;
 			grid[y][x].y = (y * mr_struct.unit) + mr_struct.origin.y;
 			grid[y][x].color = map->points[y][x].color;
-			//mlx_pixel_put(mr_struct.mlx, mr_struct.window, grid[y][x].x, grid[y][x].y, map->points[y][x].color);
 			x++;
 		}
 		y++;
@@ -128,18 +138,21 @@ void	create_grid(t_bigstruct mr_struct, t_map *map, char projection)
 	clear_image(mr_struct.img);
 	// grid = malloc_grid(map);
 	
-	if (projection == 'o')
+	if (projection == O_KEY)
 		make_orth(mr_struct, mr_struct.grid, map);
-	else if (projection == 'i')
+	else if (projection == I_KEY)
 		make_iso(mr_struct, mr_struct.grid, map);
-	else if (projection == 'p')
+	else if (projection == P_KEY)
 		make_prsp(mr_struct, mr_struct.grid, map);
 	else
-		error("something's wrong in create_grid - invalid grid type\n");
+		error("something's wrong in create_grid - invalid grid type");
 
 	// printf(P_GR"origin: %d, %d\n"P_X, mr_struct.origin.x, mr_struct.origin.y);
 	connect(mr_struct.grid, mr_struct);
+
 	mlx_put_image_to_window(mr_struct.mlx, mr_struct.window, mr_struct.img->imptr, 0, 0);
+	// mlx_string_put(mr_struct.mlx, mr_struct.window, WINDOW_W - 230, WINDOW_H + 40, GRY, "Press \"H\" for help");
+	// mlx_string_put(mr_struct.mlx, mr_struct.window, 40, WINDOW_H + 40, GRY, mr_struct.file);
 	// free_grid(grid, mr_struct);
 }
 
