@@ -18,10 +18,13 @@ SRCS	=	srcs/main.c			\
 			srcs/frees.c		\
 			srcs/lines.c		\
 			srcs/grids.c		\
+			srcs/projections.c	\
 			srcs/testing.c		\
+			srcs/movekeys.c		\
 			srcs/keys.c			\
 			srcs/images.c		\
-			srcs/secret.c		\
+			srcs/help.c			\
+			srcs/connect.c		\
 			srcs/error.c
 INCLS	=	includes/fdf.h
 WFLAGS	=	-Wall -Wextra -Werror
@@ -32,6 +35,7 @@ GREY = \033[38;5;6m
 BLUE = \033[38;5;37m
 PURPLE = \033[38;5;99m
 YELLOW = \033[38;5;214m
+GREEN = \033[38;5;121m
 WHITE = \033[0m
 
 OBJS = $(SRCS:%.c=%.o)
@@ -63,11 +67,20 @@ debug :
 	@echo "$(PURPLE)<< debug symbols compiled >>$(WHITE)"
 
 fdebug : 
-	@gcc -fsanitize=address -g $(MLXFLAGS) $(SRCS) $(LIBS) -o DEBUGfdf
+	@gcc -fsanitize=address -g $(MLXFLAGS) $(SRCS) $(LIBS) -o fsan_fdf
 	@echo "$(PURPLE)<< debug symbols compiled >>$(WHITE)"
 	@echo "$(PURPLE)<< fsanitize enabled >>$(WHITE)"
+
+leakcheck : 
+	@clang -fsanitize=address -fno-omit-frame-pointer -g $(MLXFLAGS) $(SRCS) $(LIBS) -o leak_fdf
+	@echo "$(GREEN)<< debug symbols compiled >>$(WHITE)"
+	@echo "$(GREEN)<< fsanitize leak check enabled >>$(WHITE)"
 
 debugclean :
 	@rm -rf DEBUGfdf.dSYM
 	@rm DEBUGfdf
+	@rm -rf fsan_fdf.dSYM
+	@rm fsan_DEBUGfdf
+	@rm -rf leak_fdf.dSYM
+	@rm leak_fdf
 	@echo "$(PURPLE)<< debug files removed>>$(WHITE)"

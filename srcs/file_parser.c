@@ -19,20 +19,21 @@ void	fill_point(char *str, t_pt *point)
 	point->z = ft_atoi(str);
 	if ((color = ft_strchr(str, 'x')))
 		point->color = (ft_atoibase(color, 16));
-	else point->color = 0xFFFFFF; // TODO: write a function that assigns color based on z value
+	else
+		point->color = 0xFFFFFF;
 }
 
 void	process_filestring(char *filestring, t_map *map)
 {
-	int y;
-	int x;
-	int i;
-	char *pt;
+	int		y;
+	int		x;
+	int		i;
+	char	*pt;
 
 	y = 0;
 	i = 0;
-	printf("processing "P_YW"%s\n"P_X, filestring);
 	pt = filestring;
+	nullcheck(filestring);
 	while (y < map->rows)
 	{
 		x = 0;
@@ -43,27 +44,25 @@ void	process_filestring(char *filestring, t_map *map)
 				map->max_z = map->points[y][x].z;
 			if (map->min_z > map->points[y][x].z)
 				map->min_z = map->points[y][x].z;
-			printf(P_GY"%x "P_X, map->points[y][x].color);
 			pt = scoot(pt, ' ');
 			x++;
 		}
-		printf("\n");
 		y++;
 	}
-	printf(P_BL"z-range: %d - %d\n"P_X, map->min_z, map->max_z);
 	free(filestring);
 }
 
 /*
 **	Combines current file row and filestring, adding separating space.
 */
+
 char	*add_row(char *s1, char *s2)
 {
 	char	*tmp;
 
 	tmp = ft_strdup(s2);
 	tmp = ft_strjoinfree(tmp, " ");
-		s1 = ft_strjoinfree(s1, tmp);
+	s1 = ft_strjoinfree(s1, tmp);
 	free(s2);
 	return (s1);
 }
@@ -71,6 +70,7 @@ char	*add_row(char *s1, char *s2)
 /*
 **	Allocates sufficient memory for map's 2-D array of points.
 */
+
 void	malloc_map(t_map *map)
 {
 	int	y;
@@ -79,13 +79,13 @@ void	malloc_map(t_map *map)
 	y = 0;
 	x = 0;
 	if (!(map->points = malloc(sizeof(t_pt *) * map->rows)))
-		error("failed parse: not enough memory.");
+		error("failed to parse. not enough memory.");
 	while (y != map->rows)
 	{
 		while (x != map->columns)
 		{
 			if (!(map->points[y] = malloc(sizeof(t_pt) * map->columns)))
-				error("failed parse: not enough memory.");
+				error("failed to parse. not enough memory.");
 			x++;
 		}
 		x = 0;
@@ -101,17 +101,18 @@ void	malloc_map(t_map *map)
 **	Declares a new t_map struct and stores map information.
 **	Calls process_filestring to turn the file string into a 2D t_pt array.
 */
-t_map	*new_map(char *filename)
+
+t_map	*parse(char *filename)
 {
 	t_map	*map;
 	int		fd;
 	char	*line;
 	char	*filestring;
 
-	if(!(map = malloc(sizeof(t_map))))
-		error("failed parse: not enough memory.");
-	map->rows = 0;
+	if (!(map = malloc(sizeof(t_map))))
+		error("failed to parse. not enough memory.");
 	map->points = NULL;
+	map->rows = 0;
 	filestring = NULL;
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		error("couldn't open file.");
@@ -121,36 +122,10 @@ t_map	*new_map(char *filename)
 			map->columns = ft_wordcount(line, ' ');
 		valid_check(line, map->columns);
 		filestring = add_row(filestring, line);
-		//printf(P_BL"%s•\n", filestring);
 		map->rows++;
 	}
 	close(fd);
 	malloc_map(map);
 	process_filestring(filestring, map);
-	return(map);
-}
-
-/*
-**	Control center for parsing functions.
-*/
-t_map	*parse(char *filename)
-{
-	t_map	*map;
-
-	map = new_map(filename);
-	// get_pts(map, filename, rows);
-
-
-	/* ••••••• TESTS ••••••• */
-	// printf("rows: "P_PR"%d\n"P_X, map.rows);
-	// printf("columns: "P_YW"%d\n", map.columns);
-	
-	/*
-	printf("grid[0][0]: "P_PR"%d, %d\n"P_X,\
-		map.grid[0][0].x,\
-		map.grid[0][0].y);
-	*/
-	/* ••••••• ----- ••••••• */
-
 	return (map);
 }

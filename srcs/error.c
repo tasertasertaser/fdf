@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 /*
-**	Prints description of program error in red,
-**	using escape code macro defined in header.
-**	Resets text color using escape code macro defined in header.
+**	Prints description of program error in red.
 **	Exits the program.
 */
 
@@ -24,6 +22,11 @@ void	error(char *description)
 	ft_putstr(P_RD);
 	ft_putendl(description);
 	ft_putstr(P_X);
-
 	exit(1);
+}
+
+void	nullcheck(char *string)
+{
+	if (string == NULL)
+		error("could not read file.");
 }

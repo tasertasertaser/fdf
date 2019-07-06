@@ -19,12 +19,21 @@
 
 # define BUFF_SIZE 64
 # define FD_MAX 4864
+# define FT_INTMAX 2147483647
 
 # define MIN(a,b) ((a) > (b) ? (b) : (a))
 # define MAX(a,b) ((a) > (b) ? (a) : (b))
 # define ABSOLUTE(a) (((a) < 0) ? -1 * (a) : (a))
 # define AVG(a,b) (((a) - (b)) / 2) + (b)
 # define DIFF(a,b) MAX((a), (b)) - MIN((a), (b))
+
+# define P_RD "\e[38;5;203m"
+# define P_YW "\e[38;5;220m"
+# define P_GR "\e[38;5;112m"
+# define P_BL "\e[38;5;39m"
+# define P_PR "\e[38;5;141m"
+# define P_GY "\e[38;5;240m"
+# define P_X "\e[0m"
 
 typedef struct s_list	t_list;
 struct	s_list

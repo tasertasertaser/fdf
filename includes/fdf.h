@@ -13,22 +13,26 @@
 #ifndef FDF_H
 # define FDF_H
 
-/*======== inclyoooods ========*/
+/*
+**	======== inclyoooods ========
+*/
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "../mlx/mlx.h"
-#include "../libft/libft.h"
-#include <math.h>
-#include <stdio.h>			// TODO: delete later
-#include <time.h>	// for secret mode
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include "../mlx/mlx.h"
+# include "../libft/libft.h"
+# include <math.h>
 
-/*======== testing ========*/
+/*
+**	======== testing ========
+*/
 
 # define TESTFILE "maps/10-2.fdf"
 
-/*======== strooocts ========*/
+/*
+**	======== strooocts ========
+*/
 
 typedef	struct		s_pt
 {
@@ -52,7 +56,7 @@ typedef struct		s_line
 typedef struct		s_lineshit
 {
 	double			slope;
-	int				intercept;
+	int				intr;
 	int				sign;
 	int				len;
 }					t_lineshit;
@@ -77,7 +81,7 @@ typedef struct		s_bigstruct
 	char			*file;
 	int				center_x;
 	int				center_y;
-	void			*window;
+	void			*wn;
 	void			*mlx;
 	t_im			*img;
 	t_map			*map;
@@ -87,31 +91,19 @@ typedef struct		s_bigstruct
 	double			unit;
 	float			z_mod;
 	int				clr;
-	int				setcolor;
 	int				color1;
 	int				color2;
 	int				helptoggle;
 }					t_bigstruct;
 
-/*======== MLX things ========*/
-
-# define WINDOW_W 2500
-# define WINDOW_H 1200
-
-/*======== colorstuff ========*/
+/*
+**	======== colorstuff ========
+*/
 
 # define R(a) (a) >> 16
 # define G(a) ((a) >> 8) & 0xFF
 # define B(a) (a) & 0xFF
 # define RGB(a, b, c) ((a) << 16) + ((b) << 8) + (c)
-
-# define P_RD "\e[38;5;203m"
-# define P_YW "\e[38;5;220m"
-# define P_GR "\e[38;5;112m"
-# define P_BL "\e[38;5;39m"
-# define P_PR "\e[38;5;141m"
-# define P_GY "\e[38;5;240m"
-# define P_X "\e[0m"
 
 # define PNK 0xFF57A4
 # define ORN 0xF99C4F
@@ -124,7 +116,9 @@ typedef struct		s_bigstruct
 # define BLK 0x000000
 # define WHT 0xFFFFFF
 
-/*======== special keys ========*/
+/*
+**	======== keys ========
+*/
 
 # define I_KEY 34
 # define O_KEY 31
@@ -143,52 +137,95 @@ typedef struct		s_bigstruct
 
 # define C_KEY 8
 
-# define H_KEY 4
 # define SPACE_KEY 49
+
+# define H_KEY 4
 # define ESC_KEY 53
-# define L_SHIFT 257
-# define R_SHIFT 258
 
-/*======== other ========*/
+/*
+**	======== display ========
+*/
 
+# define WND_W 1280
+# define WND_H 720
 # define PRSP_BACKEDGE .3
 # define PRSP_FRONTEDGE .9
-# define FT_INTMAX 2147483647
-# define ZOOM_MAX 200
+# define ZOOM_MAX 100
 # define ZOOM_MIN 2
 
-/*======== testing ========*/
+/*
+**	======== fn declarations ========
+*/
 
-# define TEST0 0
-# define TEST1 'b'
-# define TESTKEY 269
-
-/*======== fn declarations ========*/
-
-void	draw_line(t_line line, t_bigstruct mr_struct);
+/*
+**	...parsing & allocation...
+*/
 t_map	*parse(char *filename);
 void	valid_check(char *row, int columns);
-void	error(char *description);
-void	ft_strcjoinfree(char **old, char *new, char c);
-void	free_2D(char **array);
-void	create_grid(t_bigstruct mr_struct, t_map *map, char projection);
-int		key_press(int key, t_bigstruct *mr_struct);
-void	connect(t_coord **grid, t_bigstruct mr_struct);
-void	give_usage(void);
-void	draw_linestar(t_bigstruct mr_struct);
-void	draw_centerline(t_bigstruct mr_struct, char axis);
-int		zcolor(t_bigstruct mr_struct, int x, int y);
-int		gradient(int startcolor, int endcolor, int len, int pos);
 t_coord **malloc_grid(t_map *map);
-void	free_grid(t_coord **grid, t_bigstruct mr_struct);
+
+/*
+**	...ui...
+*/
+int		key_press(int key, t_bigstruct *mr_struct);
+void	coloroptions(t_bigstruct *mr_struct);
+void	give_usage(void);
+void	help(t_bigstruct *mr_struct);
+void	bottomline(t_bigstruct mr_struct);
+
+/*
+**	...moving the map...
+*/
+void	plot(int key, t_bigstruct *mr_struct);
+void	move(int key, t_bigstruct *mr_struct);
+void	zoom(int key, t_bigstruct *mr_struct);
+void	elevate(int key, t_bigstruct *mr_struct);
+void	reset(t_bigstruct *mr_struct);
+
+/*
+**	...drawing & projections...
+*/
+void	create_grid(t_bigstruct mr_struct, t_map *map, char projection);
 double	get_unit(t_bigstruct mr_struct);
 t_coord	get_origin(t_bigstruct mr_struct, double unit);
-// void	img_pixel_put(t_image *img, int x, int y, int color);
-// t_image	*make_image(t_bigstruct mr_struct);
+void	draw_line(t_line line, t_bigstruct mr_struct);
+void	connect(t_coord **grid, t_bigstruct mr_struct);
+void	make_orth(t_bigstruct mr_struct, t_coord **grid, t_map *map);
+void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map);
+void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map);
+double	get_xunit(t_bigstruct mr_struct, int y);
+
+/*
+**	...colors...
+*/
+int		zcolor(t_bigstruct mr_struct, int x, int y);
+int		gradient(int startcolor, int endcolor, int len, int pos);
+void	color_select(int key, t_bigstruct *mr_struct);
+void	color_cycle(t_bigstruct *mr_struct);
+
+/*
+**	...images...
+*/
 t_im	*img_factory(void *mlx);
 void	drawpixel(t_im *img, int x, int y, int color);
 void	clear_image(t_im *image);
-void	coloroptions(t_bigstruct *mr_struct);
-double	get_xunit(t_bigstruct mr_struct, int y);
+
+/*
+**	...frees...
+*/
+void	free_map(t_map *map);
+void	ft_strcjoinfree(char **old, char *new, char c);
+void	free_grid(t_coord **grid, t_bigstruct mr_struct);
+
+/*
+**	...testing...
+*/
+void	draw_centerline(t_bigstruct mr_struct, char axis);
+
+/*
+**	...error...
+*/
+void	error(char *description);
+void	nullcheck(char *string);
 
 #endif

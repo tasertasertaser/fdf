@@ -16,20 +16,18 @@
 
 #include "../includes/fdf.h"
 
-// TODO: put in Makefile
-// TODO: put decs in header
-// TODO: write free_map
-
-void	free_2D(char **array)
+void	free_map(t_map *map)
 {
 	int i;
 
 	i = 0;
-	while (array[i])
+	while (i < map->rows)
 	{
-		free(array[i]);
+		free(map->points[i]);
 		i++;
 	}
+	free(map->points);
+	free(map);
 }
 
 void	free_grid(t_coord **grid, t_bigstruct mr_struct)
