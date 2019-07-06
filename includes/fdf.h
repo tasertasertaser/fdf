@@ -34,13 +34,13 @@
 **	======== strooocts ========
 */
 
-typedef	struct		s_pt
+typedef struct		s_pt
 {
 	int				z;
 	int				color;
 }					t_pt;
 
-typedef	struct		s_coord
+typedef struct		s_coord
 {
 	int				x;
 	int				y;
@@ -160,72 +160,76 @@ typedef struct		s_bigstruct
 /*
 **	...parsing & allocation...
 */
-t_map	*parse(char *filename);
-void	valid_check(char *row, int columns);
-t_coord **malloc_grid(t_map *map);
+t_map				*parse(char *filename);
+void				valid_check(char *row, int columns);
+t_coord				**malloc_grid(t_map *map);
 
 /*
 **	...ui...
 */
-int		key_press(int key, t_bigstruct *mr_struct);
-void	coloroptions(t_bigstruct *mr_struct);
-void	give_usage(void);
-void	help(t_bigstruct *mr_struct);
-void	bottomline(t_bigstruct mr_struct);
+int					key_press(int key, t_bigstruct *mr_struct);
+void				coloroptions(t_bigstruct *mr_struct);
+void				give_usage(void);
+void				help(t_bigstruct *mr_struct);
+void				bottomline(t_bigstruct mr_struct);
 
 /*
 **	...moving the map...
 */
-void	plot(int key, t_bigstruct *mr_struct);
-void	move(int key, t_bigstruct *mr_struct);
-void	zoom(int key, t_bigstruct *mr_struct);
-void	elevate(int key, t_bigstruct *mr_struct);
-void	reset(t_bigstruct *mr_struct);
+void				plot(int key, t_bigstruct *mr_struct);
+void				move(int key, t_bigstruct *mr_struct);
+void				zoom(int key, t_bigstruct *mr_struct);
+void				elevate(int key, t_bigstruct *mr_struct);
+void				reset(t_bigstruct *mr_struct);
 
 /*
 **	...drawing & projections...
 */
-void	create_grid(t_bigstruct mr_struct, t_map *map, char projection);
-double	get_unit(t_bigstruct mr_struct);
-t_coord	get_origin(t_bigstruct mr_struct, double unit);
-void	draw_line(t_line line, t_bigstruct mr_struct);
-void	connect(t_coord **grid, t_bigstruct mr_struct);
-void	make_orth(t_bigstruct mr_struct, t_coord **grid, t_map *map);
-void	make_iso(t_bigstruct mr_struct, t_coord **grid, t_map *map);
-void	make_prsp(t_bigstruct mr_struct, t_coord **grid, t_map *map);
-double	get_xunit(t_bigstruct mr_struct, int y);
+void				create_grid(t_bigstruct mr_struct, t_map *map,
+						char projection);
+double				get_unit(t_bigstruct mr_struct);
+t_coord				get_origin(t_bigstruct mr_struct, double unit);
+void				draw_line(t_line line, t_bigstruct mr_struct);
+void				connect(t_coord **grid, t_bigstruct mr_struct);
+void				make_orth(t_bigstruct mr_struct, t_coord **grid,
+						t_map *map);
+void				make_iso(t_bigstruct mr_struct, t_coord **grid,
+						t_map *map);
+void				make_prsp(t_bigstruct mr_struct, t_coord **grid,
+						t_map *map);
+double				get_xunit(t_bigstruct mr_struct, int y);
 
 /*
 **	...colors...
 */
-int		zcolor(t_bigstruct mr_struct, int x, int y);
-int		gradient(int startcolor, int endcolor, int len, int pos);
-void	color_select(int key, t_bigstruct *mr_struct);
-void	color_cycle(t_bigstruct *mr_struct);
+int					zcolor(t_bigstruct mr_struct, int x, int y);
+int					gradient(int startcolor, int endcolor, int len, int pos);
+void				color_select(int key, t_bigstruct *mr_struct);
+void				color_cycle(t_bigstruct *mr_struct);
 
 /*
 **	...images...
 */
-t_im	*img_factory(void *mlx);
-void	drawpixel(t_im *img, int x, int y, int color);
-void	clear_image(t_im *image);
+t_im				*img_factory(void *mlx);
+void				drawpixel(t_im *img, int x, int y, int color);
+void				clear_image(t_im *image);
 
 /*
 **	...frees...
 */
-void	free_map(t_map *map);
-void	ft_strcjoinfree(char **old, char *new, char c);
-void	free_grid(t_coord **grid, t_bigstruct mr_struct);
+void				free_map(t_map *map);
+void				ft_strcjoinfree(char **old, char *new, char c);
+void				free_grid(t_coord **grid, t_bigstruct mr_struct);
 
 /*
 **	...testing...
 */
-void	draw_centerline(t_bigstruct mr_struct, char axis);
+void				draw_centerline(t_bigstruct mr_struct, char axis);
 
 /*
 **	...error...
 */
-void	error(char *description);
-void	nullcheck(char *string);
+void				error(char *description);
+void				nullcheck(char *string);
 
 #endif
