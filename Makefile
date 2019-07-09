@@ -6,7 +6,7 @@
 #    By: cschulle <cschulle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/30 14:40:39 by cschulle          #+#    #+#              #
-#    Updated: 2019/06/26 21:04:01 by cschulle         ###   ########.fr        #
+#    Updated: 2019/07/06 02:02:35 by cschulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,11 @@ SRCS	=	srcs/main.c			\
 			srcs/images.c		\
 			srcs/help.c			\
 			srcs/connect.c		\
+			srcs/gttdl.c		\
 			srcs/error.c
 INCLS	=	includes/fdf.h
-WFLAGS	=	-Wall -Wextra -Werror
+WFLAGS	=	-Wall -Wextra
+#-Werror
 MLXFLAGS=	-framework OpenGL -framework AppKit
 LIBS	=	-L libft -lft -L mlx -L mlx -lmlx
 
@@ -80,7 +82,7 @@ debugclean :
 	@rm -rf DEBUGfdf.dSYM
 	@rm DEBUGfdf
 	@rm -rf fsan_fdf.dSYM
-	@rm fsan_DEBUGfdf
+	@rm fsan_fdf
 	@rm -rf leak_fdf.dSYM
 	@rm leak_fdf
 	@echo "$(PURPLE)<< debug files removed>>$(WHITE)"

@@ -16,26 +16,12 @@
 
 #include "../includes/fdf.h"
 
-void	free_map(t_map *map)
-{
-	int i;
-
-	i = 0;
-	while (i < map->rows)
-	{
-		free(map->points[i]);
-		i++;
-	}
-	free(map->points);
-	free(map);
-}
-
 void	free_grid(t_coord **grid, t_bigstruct mr_struct)
 {
 	int y;
 
 	y = 0;
-	while (y < mr_struct.map->rows)
+	while (y < mr_struct.rows)
 	{
 		free(grid[y]);
 		y++;

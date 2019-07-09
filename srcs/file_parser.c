@@ -23,7 +23,7 @@ void	fill_point(char *str, t_pt *point)
 		point->color = 0xFFFFFF;
 }
 
-void	process_filestring(char *filestring, t_map *map)
+void	process_filestring(char *filestring, t_bigstruct *mr_struct)
 {
 	int		y;
 	int		x;
@@ -34,22 +34,21 @@ void	process_filestring(char *filestring, t_map *map)
 	i = 0;
 	pt = filestring;
 	nullcheck(filestring);
-	while (y < map->rows)
+	while (y < mr_struct->rows)
 	{
 		x = 0;
-		while (x < map->columns)
+		while (x < mr_struct->columns)
 		{
-			fill_point(pt, &map->points[y][x]);
-			if (map->max_z < map->points[y][x].z)
-				map->max_z = map->points[y][x].z;
-			if (map->min_z > map->points[y][x].z)
-				map->min_z = map->points[y][x].z;
+			fill_point(pt, &mr_struct->points[y][x]);
+			if (mr_struct->max_z < mr_struct->points[y][x].z)
+				mr_struct->max_z = mr_struct->points[y][x].z;
+			if (mr_struct->min_z > mr_struct->points[y][x].z)
+				mr_struct->min_z = mr_struct->points[y][x].z;
 			pt = scoot(pt, ' ');
 			x++;
 		}
 		y++;
 	}
-	free(filestring);
 }
 
 /*
@@ -60,10 +59,9 @@ char	*add_row(char *s1, char *s2)
 {
 	char	*tmp;
 
-	tmp = ft_strdup(s2);
-	tmp = ft_strjoinfree(tmp, " ");
+	tmp = ft_strjoinfree(s2, " ");
 	s1 = ft_strjoinfree(s1, tmp);
-	free(s2);
+	free(tmp);
 	return (s1);
 }
 
@@ -71,61 +69,46 @@ char	*add_row(char *s1, char *s2)
 **	Allocates sufficient memory for map's 2-D array of points.
 */
 
-void	malloc_map(t_map *map)
+void	malloc_map(t_bigstruct *mr_struct)
 {
 	int	y;
-	int	x;
 
 	y = 0;
-	x = 0;
-	if (!(map->points = malloc(sizeof(t_pt *) * map->rows)))
+	if (!(mr_struct->points = malloc(sizeof(t_pt) * mr_struct->rows)))
 		error("failed to parse. not enough memory.");
-	while (y != map->rows)
+	while (y != mr_struct->rows)
 	{
-		while (x != map->columns)
-		{
-			if (!(map->points[y] = malloc(sizeof(t_pt) * map->columns)))
-				error("failed to parse. not enough memory.");
-			x++;
-		}
-		x = 0;
+		if (!(mr_struct->points[y] = malloc(sizeof(t_pt) * mr_struct->columns)))
+			error("failed to parse. not enough memory.");
 		y++;
 	}
-	map->max_z = 0;
-	map->min_z = 0;
 }
 
-/*
-**	Reads the entire file into a single string with get_next_line.
-**	Calls valid_check on each row as it goes to verify the file.
-**	Declares a new t_map struct and stores map information.
-**	Calls process_filestring to turn the file string into a 2D t_pt array.
-*/
-
-t_map	*parse(char *filename)
+void	parse(char *filename, t_bigstruct *mr_struct)
 {
-	t_map	*map;
 	int		fd;
 	char	*line;
+	char	*oldfs;
 	char	*filestring;
 
-	if (!(map = malloc(sizeof(t_map))))
-		error("failed to parse. not enough memory.");
-	map->points = NULL;
-	map->rows = 0;
 	filestring = NULL;
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		error("couldn't open file.");
-	while ((get_next_line(fd, &line)) == 1)
+	while ((line = getthedamnline(fd)))
 	{
-		if (map->rows == 0)
-			map->columns = ft_wordcount(line, ' ');
-		valid_check(line, map->columns);
-		filestring = add_row(filestring, line);
-		map->rows++;
+		if (mr_struct->rows == 0)
+			mr_struct->columns = ft_wordcount(line, ' ');
+		valid_check(line, mr_struct->columns);
+		oldfs = filestring;
+		filestring = add_row(oldfs, line);
+		mr_struct->rows++;
+		free(line);
+		free(oldfs);
+		line = NULL;
 	}
+	free(line);
 	close(fd);
-	malloc_map(map);
-	process_filestring(filestring, map);
-	return (map);
+	malloc_map(mr_struct);
+	process_filestring(filestring, mr_struct);
+	free(filestring);
 }

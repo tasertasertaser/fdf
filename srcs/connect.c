@@ -21,13 +21,13 @@ void	x_connect(int x, int y, t_coord **grid, t_bigstruct mr_struct)
 	if (mr_struct.clr)
 		line.a.color = zcolor(mr_struct, x, y);
 	else
-		line.a.color = mr_struct.map->points[y][x].color;
+		line.a.color = mr_struct.points[y][x].color;
 	line.b.x = grid[y][x + 1].x;
 	line.b.y = grid[y][x + 1].y;
 	if (mr_struct.clr)
 		line.b.color = zcolor(mr_struct, x + 1, y);
 	else
-		line.b.color = mr_struct.map->points[y][x + 1].color;
+		line.b.color = mr_struct.points[y][x + 1].color;
 	draw_line(line, mr_struct);
 }
 
@@ -40,13 +40,13 @@ void	y_connect(int x, int y, t_coord **grid, t_bigstruct mr_struct)
 	if (mr_struct.clr)
 		line.a.color = zcolor(mr_struct, x, y);
 	else
-		line.a.color = mr_struct.map->points[y][x].color;
+		line.a.color = mr_struct.points[y][x].color;
 	line.b.x = grid[y + 1][x].x;
 	line.b.y = grid[y + 1][x].y;
 	if (mr_struct.clr)
 		line.b.color = zcolor(mr_struct, x, y + 1);
 	else
-		line.b.color = mr_struct.map->points[y + 1][x].color;
+		line.b.color = mr_struct.points[y + 1][x].color;
 	draw_line(line, mr_struct);
 }
 
@@ -56,14 +56,14 @@ void	connect(t_coord **grid, t_bigstruct mr_struct)
 	int		y;
 
 	y = 0;
-	while (y < mr_struct.map->rows)
+	while (y < mr_struct.rows)
 	{
 		x = 0;
-		while (x < mr_struct.map->columns)
+		while (x < mr_struct.columns)
 		{
-			if ((x + 1) < mr_struct.map->columns)
+			if ((x + 1) < mr_struct.columns)
 				x_connect(x, y, grid, mr_struct);
-			if ((y + 1) < mr_struct.map->rows)
+			if ((y + 1) < mr_struct.rows)
 				y_connect(x, y, grid, mr_struct);
 			x++;
 		}

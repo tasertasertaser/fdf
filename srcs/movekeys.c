@@ -57,5 +57,5 @@ void	reset(t_bigstruct *mr_struct)
 	mr_struct->unit = get_unit(*mr_struct);
 	mr_struct->origin = get_origin(*mr_struct, mr_struct->unit);
 	mr_struct->z_mod = 3;
-	create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+	create_grid(*mr_struct, mr_struct->proj);
 }

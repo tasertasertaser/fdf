@@ -84,7 +84,11 @@ typedef struct		s_bigstruct
 	void			*wn;
 	void			*mlx;
 	t_im			*img;
-	t_map			*map;
+	int				rows;
+	int				columns;
+	int				max_z;
+	int				min_z;
+	t_pt			**points;
 	t_coord			**grid;
 	char			proj;
 	t_coord			origin;
@@ -160,9 +164,10 @@ typedef struct		s_bigstruct
 /*
 **	...parsing & allocation...
 */
-t_map				*parse(char *filename);
+void				parse(char *filename, t_bigstruct *mr_struct);
 void				valid_check(char *row, int columns);
-t_coord				**malloc_grid(t_map *map);
+t_coord				**malloc_grid(t_bigstruct mr_struct);
+char				*getthedamnline(int fd);
 
 /*
 **	...ui...
@@ -185,18 +190,14 @@ void				reset(t_bigstruct *mr_struct);
 /*
 **	...drawing & projections...
 */
-void				create_grid(t_bigstruct mr_struct, t_map *map,
-						char projection);
+void				create_grid(t_bigstruct mr_struct, char projection);
 double				get_unit(t_bigstruct mr_struct);
 t_coord				get_origin(t_bigstruct mr_struct, double unit);
 void				draw_line(t_line line, t_bigstruct mr_struct);
 void				connect(t_coord **grid, t_bigstruct mr_struct);
-void				make_orth(t_bigstruct mr_struct, t_coord **grid,
-						t_map *map);
-void				make_iso(t_bigstruct mr_struct, t_coord **grid,
-						t_map *map);
-void				make_prsp(t_bigstruct mr_struct, t_coord **grid,
-						t_map *map);
+void				make_orth(t_bigstruct mr_struct, t_coord **grid);
+void				make_iso(t_bigstruct mr_struct, t_coord **grid);
+void				make_prsp(t_bigstruct mr_struct, t_coord **grid);
 double				get_xunit(t_bigstruct mr_struct, int y);
 
 /*
@@ -217,7 +218,6 @@ void				clear_image(t_im *image);
 /*
 **	...frees...
 */
-void				free_map(t_map *map);
 void				ft_strcjoinfree(char **old, char *new, char c);
 void				free_grid(t_coord **grid, t_bigstruct mr_struct);
 

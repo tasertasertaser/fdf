@@ -15,7 +15,6 @@
 void	exit_fdf(t_bigstruct *mr_struct)
 {
 	free_grid(mr_struct->grid, *mr_struct);
-	free_map(mr_struct->map);
 	mlx_destroy_image(mr_struct->mlx, mr_struct->img);
 	mlx_destroy_window(mr_struct->mlx, mr_struct->wn);
 	exit(0);
@@ -38,7 +37,7 @@ void	helpmenu(t_bigstruct *mr_struct)
 			- 230, WND_H + 40, GRY, "Press \"H\" for help");
 		mlx_string_put(mr_struct->mlx, mr_struct->wn, 40,
 		WND_H + 40, GRY, mr_struct->file);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+		create_grid(*mr_struct, mr_struct->proj);
 	}
 }
 
@@ -65,7 +64,7 @@ int		key_press(int key, t_bigstruct *mr_struct)
 		if ((key >= 82 && key <= 92 && key != 90) ||
 			(key >= 18 && key <= 29 && key != 24))
 			color_select(key, mr_struct);
-		create_grid(*mr_struct, mr_struct->map, mr_struct->proj);
+		create_grid(*mr_struct, mr_struct->proj);
 	}
 	return (key);
 }

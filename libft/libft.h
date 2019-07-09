@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <string.h>
 
-# define BUFF_SIZE 64
+# define BUFF_SIZE 8
 # define FD_MAX 4864
 # define FT_INTMAX 2147483647
 
@@ -133,7 +133,7 @@ char	*ft_base(int num, int base);
 int		get_next_line(const int fd, char **line);
 int		ft_ishexdigit(int c);
 int		ft_isupper(int c);
-int 	ft_islower(int c);
+int		ft_islower(int c);
 int		ft_atoibase(char *str, int base);
 char	*ft_strjoinfree(char *old, char *new);
 char	*scoot(char *string, char delimiter);
